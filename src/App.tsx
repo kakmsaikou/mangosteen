@@ -1,5 +1,5 @@
-import { defineComponent } from "vue";
-import { RouterView } from "vue-router";
+import {defineComponent} from 'vue';
+import {RouterView} from 'vue-router';
 
 export const App = defineComponent({
   setup() {
@@ -7,18 +7,17 @@ export const App = defineComponent({
       <header>导航
         <ul>
           <li>
-            <router-link to="/">Foo</router-link>
+            <router-link to='/'>Foo</router-link>
           </li>
           <li>
-            <router-link to="/about">Bar</router-link>
+            <router-link to='/about'>Bar</router-link>
           </li>
-        </ul> 
+        </ul>
       </header>
       <div>
-        <RouterView />
+        <RouterView/>
       </div>
       <footer>页脚</footer>
-    </>
-
+    </>;
   }
-})
+});
