@@ -1,9 +1,9 @@
 import {defineComponent} from 'vue';
-import s from './First.module.scss'
+import s from './Welcomelayout.module.scss';
 
 export const WelcomeLayout = defineComponent({
-  setup:(props, {slots})=>{
-    return ()=>(
+  setup: (props, {slots}) => {
+    return () => (
       <div class={s.wrapper}>
         <div class={s.card}>
           {slots.icon?.()}
@@ -13,6 +13,6 @@ export const WelcomeLayout = defineComponent({
           {slots.buttons?.()}
         </div>
       </div>
-    )
+    );
   }
-})
+});
