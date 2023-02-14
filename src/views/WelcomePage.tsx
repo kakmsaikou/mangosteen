@@ -1,6 +1,6 @@
 import {defineComponent, VNode, Transition, ref, watchEffect} from 'vue';
 import {RouteLocationNormalizedLoaded, RouterView, useRoute, useRouter} from 'vue-router';
-import s from './Welcome.module.scss';
+import s from './WelcomePage.module.scss';
 import {useSwipe} from '../hooks/useSwipe';
 import {throttle} from '../shared/throttle';
 
@@ -11,7 +11,7 @@ const pushMap: Record<string, string> = {
   'Welcome4': '/start'
 }
 
-export const Welcome = defineComponent({
+export const WelcomePage = defineComponent({
   setup: () => {
     const main = ref<HTMLElement>();
     const {direction, swiping} = useSwipe(main, {
