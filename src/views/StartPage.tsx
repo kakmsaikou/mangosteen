@@ -1,6 +1,7 @@
 import {defineComponent} from 'vue';
 import {Button} from '../shared/Button';
 import s from './StartPage.module.scss';
+import {Floatbutton} from '../shared/Floatbutton';
 
 export const StartPage = defineComponent({
   setup: () => {
@@ -12,6 +13,7 @@ export const StartPage = defineComponent({
         <div class={s.button_wrapper}>
           <Button class={s.button} onClick={onclick}>开始记账</Button>
         </div>
+        <Floatbutton/>
       </div>
     );
   }
