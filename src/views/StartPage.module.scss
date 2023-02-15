@@ -1,7 +1,16 @@
 .button {
   width: 100%;
 
-  &_wrapper{
+  &_wrapper {
     padding: 16px 16px;
+  }
+}
+
+.piggy {
+  width: 128px;
+  height: 128px;
+
+  &_wrapper {
+    padding: 160px 0;
   }
 }

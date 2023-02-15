@@ -12,7 +12,7 @@ export const Icon = defineComponent({
   },
   setup: (props) => {
     return () =>
-      <svg class={s.svg}>
+      <svg class={s.icon}>
         <use xlinkHref={'#' + props.name}/>
       </svg>;
   }
