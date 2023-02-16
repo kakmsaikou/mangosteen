@@ -17,3 +17,9 @@ position: fixed;
   width: 16em;
   height: calc(100% - var(--top-safe-area-height));
 }
+
+.currentUser {
+  padding: 32px 16px;
+  background-color: var(--overlay-user-bg);
+  color: var(--overlay-user-text)
+}

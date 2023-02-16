@@ -10,17 +10,18 @@ export const Overlay = defineComponent({
   },
   setup: (props) => {
     const closeMenu = () => {
-      props.onClose?.()
+      props.onClose?.();
     };
+    const onClickSignIn = () => {};
     return () => (<>
         <div class={s.mask} onClick={closeMenu}></div>
         <div class={s.overlay}>
-          <section>
+          <section class={s.currentUser} onClick={onClickSignIn}>
             <h2>未登录用户</h2>
             <p>点击这里登陆</p>
           </section>
           <nav>
-            <ul>
+            <ul class={s.action_list}>
               <li>
                 <Icon name="charts"/>
                 <span>统计图表</span>
