@@ -1,4 +1,5 @@
 import {defineComponent, PropType} from 'vue';
+import {RouterLink} from 'vue-router';
 import {Icon} from './Icon';
 import s from './Overlay.module.scss';
 
@@ -23,8 +24,10 @@ export const Overlay = defineComponent({
           <nav>
             <ul class={s.action_list}>
               <li>
-                <Icon name="charts"/>
-                <span>统计图表</span>
+                <RouterLink to='/statistics' class={s.action}>
+                  <Icon name='charts' class={s.icon}/>
+                  <span>统计图表</span>
+                </RouterLink>
               </li>
               <li>
                 <Icon name="export"/>
