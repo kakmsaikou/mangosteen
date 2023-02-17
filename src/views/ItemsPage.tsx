@@ -1,10 +1,10 @@
 import {defineComponent} from 'vue';
-import s from './ItemsPage.module.scss'
+import {RouterView} from 'vue-router';
 
 export const ItemsPage = defineComponent({
   setup: () => {
     return ()=>(
-      <div>ItemsPage</div>
+      <RouterView/>
     )
   }
 });
