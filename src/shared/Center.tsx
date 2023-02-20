@@ -10,7 +10,7 @@ export const Center = defineComponent({
   },
   setup: (props, context) => {
     return () => (
-      <div class={[s.center, props.direction]}>
+      <div class={[s.center, props.direction === 'row' ? s.row : s.column]}>
         {context.slots.default?.()}
       </div>
     );
