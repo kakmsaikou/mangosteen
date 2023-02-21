@@ -55,8 +55,11 @@
       }
     }
 
-    &:nth-child(10){
-      grid-area: d;
+    &:nth-child(13),
+    &:nth-child(14),
+    &:nth-child(15),
+    &:nth-child(16) {
+      border-bottom: none;
     }
     &:nth-child(11){
       grid-area: n0;
@@ -66,8 +69,6 @@
     }
     &:nth-child(13){
       grid-area: s;
-      background: var(--inputPad-button-bg-color-important);
-      color:var(--button-text);
     }
 
     //&:nth-child(4n) {
