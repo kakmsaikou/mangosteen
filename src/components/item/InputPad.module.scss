@@ -21,14 +21,14 @@
       width: 24px;
       height: 24px;
       margin-right: 8px;
-      fill: var(--date-text)
+      fill: var(--amount-text)
     }
   }
 
   > .amount {
     font-size: 20px;
     font-family: 'Consolas', 'Courier New', monospace;
-    color: var(--amount-textr)
+    color: var(--amount-text)
   }
 }
 
