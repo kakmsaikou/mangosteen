@@ -1,7 +1,3 @@
-.inputPad {
-
-}
-
 .dateAmountContainer {
   display: flex;
   justify-content: space-between;
@@ -14,21 +10,21 @@
     display: flex;
     align-items: center;
     justify-content: start;
-    font-family: 'Consolas', 'Courier New', monospace;
+    font-family: "Consolas", "Courier New", monospace;
     color: var(--date-text);
 
     .icon {
       width: 24px;
       height: 24px;
       margin-right: 8px;
-      fill: var(--amount-text)
+      fill: var(--amount-text);
     }
   }
 
   > .amount {
     font-size: 20px;
-    font-family: 'Consolas', 'Courier New', monospace;
-    color: var(--amount-text)
+    font-family: "Consolas", "Courier New", monospace;
+    color: var(--amount-text);
   }
 }
 
@@ -41,7 +37,7 @@
     "n0 n0 d  s";
   grid-auto-rows: 48px;
   grid-auto-columns: 1fr;
-  gap:1px;
+  gap: 1px;
   background: var(--inputPad-button-border-color);
   border-top: 1px solid var(--inputPad-button-border-color);
 
@@ -54,14 +50,16 @@
         grid-area: n#{$i};
       }
     }
-    &:nth-child(11){
+    &:nth-child(11) {
       grid-area: n0;
     }
-    &:nth-child(12){
+    &:nth-child(12) {
       grid-area: c;
     }
-    &:nth-child(13){
+    &:nth-child(13) {
       grid-area: s;
+      background-color: var(--inputPad-button-bg-important);
+      color: var(--inputPad-button-text-important);
     }
   }
 }
