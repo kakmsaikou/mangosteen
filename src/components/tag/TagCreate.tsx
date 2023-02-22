@@ -1,15 +1,11 @@
-import { defineComponent, PropType } from "vue";
+import { defineComponent} from "vue";
 import { MainLayout } from "../../layouts/MainLayout";
 import { Button } from "../../shared/Button";
 import { Icon } from "../../shared/Icon";
 import s from "./TagCreate.module.scss";
+
 export const TagCreate = defineComponent({
-  props: {
-    name: {
-      type: String as PropType<string>,
-    },
-  },
-  setup: (props, context) => {
+  setup: () => {
     return () => (
       <MainLayout>
         {{
