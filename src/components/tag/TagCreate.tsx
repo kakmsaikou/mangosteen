@@ -1,6 +1,6 @@
 /** @format */
 
-import { defineComponent, reactive, toRaw } from "vue"
+import { defineComponent, reactive } from "vue"
 import { MainLayout } from "../../layouts/MainLayout"
 import { Button } from "../../shared/Button"
 import { EmojiSelect } from "../../shared/EmojiSelect"
@@ -40,7 +40,7 @@ export const TagCreate = defineComponent({
 										<input v-model={formData.name} class={[s.formItem, s.input, s.error]}></input>
 									</div>
 									<div class={s.formItem_errorHint}>
-										<span>{errors["name"][0]}</span>
+										<span></span>
 									</div>
 								</label>
 							</div>
