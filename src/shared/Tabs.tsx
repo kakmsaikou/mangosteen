@@ -1,7 +1,11 @@
-import { defineComponent, PropType } from 'vue';
 import s from './Tabs.module.scss';
+import { defineComponent, PropType } from 'vue';
+
 export const Tabs = defineComponent({
   props: {
+    classPrefix: {
+      type: String,
+    },
     selected: {
       type: String as PropType<string>,
       required: false,
@@ -20,11 +24,15 @@ export const Tabs = defineComponent({
           throw new Error('<Tabs> only accepts <Tab> as children');
         }
       }
+      const CP = props.classPrefix;
       return (
-        <div class={s.tabs}>
-          <ol class={s.tabs_nav}>
+        <div class={[s.tabs, CP + '_tabs']}>
+          <ol class={[s.tabs_nav, CP + '_tabs_nav']}>
             {tabs.map(item => (
-              <li class={item.props?.name === props.selected ? s.selected : ''} onClick={() => context.emit('update:selected', item.props?.name)}>
+              <li
+                class={[item.props?.name === props.selected ? [s.selected, CP + '_selected'] : '', CP + '_tabs_nav_item']}
+                onClick={() => context.emit('update:selected', item.props?.name)}
+              >
                 {item.props?.name}
               </li>
             ))}
