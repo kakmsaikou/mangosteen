@@ -1,0 +1,14 @@
+.wrapper {
+  padding-bottom: 16px;
+
+  .actions {
+    padding: 0 16px;
+    display: flex;
+    justify-content: space-between;
+
+    .deleteTag,
+    .clearAllRecord {
+      width: calc(50% - 8px);
+    }
+  }
+}
