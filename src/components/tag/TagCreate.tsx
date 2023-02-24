@@ -4,7 +4,7 @@ import { Button } from '../../shared/Button';
 import { EmojiSelect } from '../../shared/EmojiSelect';
 import { Icon } from '../../shared/Icon';
 import { Rules, validate } from '../../shared/validate';
-import s from './TagCreate.module.scss';
+import s from './Tag.module.scss';
 
 export const TagCreate = defineComponent({
   setup: () => {
@@ -42,10 +42,7 @@ export const TagCreate = defineComponent({
                 <label class={s.formLabel}>
                   <span class={s.formItem_name}>标签名</span>
                   <div class={s.formItem_value}>
-                    <input
-                      v-model={reactiveFormData.name}
-                      class={[s.formItem, s.input, s.error]}
-                    ></input>
+                    <input v-model={reactiveFormData.name} class={[s.formItem, s.input, s.error]}></input>
                   </div>
                   <div class={s.formItem_errorHint}>
                     <span>{reactiveErrors['name'] ? reactiveErrors['name'][0] : '　'}</span>
@@ -56,10 +53,7 @@ export const TagCreate = defineComponent({
                 <label class={s.formLabel}>
                   <span class={s.formItem_name}>符号 {reactiveFormData.sign}</span>
                   <div class={s.formItem_value}>
-                    <EmojiSelect
-                      v-model={reactiveFormData.sign}
-                      class={[s.formItem, s.emojiList, s.error]}
-                    />
+                    <EmojiSelect v-model={reactiveFormData.sign} class={[s.formItem, s.emojiList, s.error]} />
                   </div>
                   <div class={s.formItem_errorHint}>
                     <span>{reactiveErrors['sign'] ? reactiveErrors['sign']?.[0] : '　'}</span>
