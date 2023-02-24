@@ -1,19 +1,18 @@
-import {defineComponent} from 'vue';
-import {Navbar} from '../shared/Navbar';
+import { defineComponent, PropType } from 'vue';
+import { Navbar } from '../shared/Navbar';
 
 export const MainLayout = defineComponent({
   setup: (props, context) => {
-    const slots = context.slots;
     return () => (
-      <>
-        <Navbar>{
-          {
-            default: () => slots.title?.(),
-            icon: () => slots.icon?.()
-          }
-        }</Navbar>
-        {slots.default?.()}
-      </>
+      <div>
+        <Navbar>
+          {{
+            default: () => context.slots.title?.(),
+            icon: () => context.slots.icon?.(),
+          }}
+        </Navbar>
+        {context.slots.default?.()}
+      </div>
     );
-  }
+  },
 });
