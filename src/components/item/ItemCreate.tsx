@@ -1,4 +1,4 @@
-import { defineComponent, PropType, ref } from 'vue';
+import { defineComponent, PropType, reactive, ref } from 'vue';
 import { MainLayout } from '../../layouts/MainLayout';
 import { Icon } from '../../shared/Icon';
 import { Tabs, Tab } from '../../shared/Tabs';
@@ -13,7 +13,7 @@ export const ItemCreate = defineComponent({
   },
   setup: () => {
     const refKind = ref('支出');
-    const refExpensesTags = ref([
+    const reactExpensesTags = reactive([
       { id: 1, name: '餐费', sign: '￥', category: 'expenses' },
       { id: 2, name: '打车', sign: '￥', category: 'expenses' },
       { id: 3, name: '聚餐', sign: '￥', category: 'expenses' },
@@ -41,7 +41,7 @@ export const ItemCreate = defineComponent({
       { id: 4, name: '打车', sign: '￥', category: 'expenses' },
       { id: 4, name: '打车', sign: '￥', category: 'expenses' },
     ]);
-    const refIncomeTags = ref([
+    const reactIncomeTags = reactive([
       { id: 4, name: '工资', sign: '￥', category: 'income' },
       { id: 5, name: '彩票', sign: '￥', category: 'income' },
       { id: 6, name: '滴滴', sign: '￥', category: 'income' },
@@ -61,7 +61,7 @@ export const ItemCreate = defineComponent({
                     </div>
                     <div class={s.name}>新增</div>
                   </div>
-                  {refExpensesTags.value.map(tag => (
+                  {reactExpensesTags.map(tag => (
                     <div class={[s.tag, s.selected]}>
                       <div class={s.sign}>{tag.sign}</div>
                       <div class={s.name}>{tag.name}</div>
@@ -75,7 +75,7 @@ export const ItemCreate = defineComponent({
                     </div>
                     <div class={s.name}>新增</div>
                   </div>
-                  {refIncomeTags.value.map(tag => (
+                  {reactIncomeTags.map(tag => (
                     <div class={[s.tag, s.selected]}>
                       <div class={s.sign}>{tag.sign}</div>
                       <div class={s.name}>{tag.name}</div>

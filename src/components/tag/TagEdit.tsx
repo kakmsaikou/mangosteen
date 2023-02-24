@@ -1,4 +1,4 @@
-import {computed, defineComponent, ref} from 'vue';
+import { computed, defineComponent, ref } from 'vue';
 
 export const TagEdit = defineComponent({
   setup: () => {
@@ -7,12 +7,15 @@ export const TagEdit = defineComponent({
     const onClick = () => {
       if (refNum.value < 4) refNum.value += 1;
     };
-    const num = computed(() => { // 这个 num 可以定义在 return 外
+    const num = computed(() => {
+      // 这个 num 可以定义在 return 外
       return arr[refNum.value];
     });
-    return () => <>
-      <div>{num.value}</div>
-      <button onClick={onClick}>refNum+1</button>
-    </>;
-  }
+    return () => (
+      <>
+        <div>{num.value}</div>
+        <button onClick={onClick}>refNum+1</button>
+      </>
+    );
+  },
 });
