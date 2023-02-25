@@ -63,7 +63,7 @@ export const FormItem = defineComponent({
                 onClick={() => {
                   refDateVisible.value = true;
                 }}
-                class={[s.formIem, s.input]}
+                class={[s.formItem, s.input]}
               />
               <Popup position="bottom" v-model:show={refDateVisible.value}>
                 <DatetimePicker
