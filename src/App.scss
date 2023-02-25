@@ -14,8 +14,6 @@ body {
 }
 
 .customTabs_tabs_nav {
-  // 不加 important 会优先级不足
-  // justify-content: flex-start !important;
   justify-content: flex-start;
 
   & > &_item {
