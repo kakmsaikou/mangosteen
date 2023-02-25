@@ -40,7 +40,7 @@ export class Time {
   firstDayOfYear() {
     return new Time(new Date(this.date.getFullYear(), 0, 1, 0, 0, 0));
   }
-  lastDayOfMoth() {
+  lastDayOfMonth() {
     return new Time(new Date(this.date.getFullYear(), this.date.getMonth() + 1, 0, 0, 0, 0));
   }
   lastDayOfYear() {
@@ -56,10 +56,9 @@ export class Time {
         date.setFullYear(date.getFullYear() + amount);
         break;
       case 'month':
-        // 1.31 + 1m = 2.28/2.29
-        const d = date.getDate(); // 1.31
-        date.setDate(1); // 1.1
-        date.setMonth(date.getMonth() + amount); // 2.1
+        const d = date.getDate();
+        date.setDate(1);
+        date.setMonth(date.getMonth() + amount);
         const d2 = new Date(date.getFullYear(), date.getMonth() + 1, 0, 0, 0).getDate();
         date.setDate(Math.min(d, d2));
         break;
