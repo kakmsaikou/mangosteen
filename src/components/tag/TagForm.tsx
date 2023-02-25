@@ -3,6 +3,7 @@ import { defineComponent, reactive } from 'vue';
 import { EmojiSelect } from '../../shared/EmojiSelect';
 import { Rules, validate } from '../../shared/validate';
 import s from './Tag.module.scss';
+import { Form, FormItem } from '../../shared/Form';
 
 export const TagFrom = defineComponent({
   setup: () => {
@@ -11,7 +12,7 @@ export const TagFrom = defineComponent({
       sign: '😀',
     });
     const reactiveErrors = reactive<{ [k in keyof typeof reactiveFormData]?: string[] }>({});
-    const omSubmit = (e: Event) => {
+    const onSubmit = (e: Event) => {
       const rules: Rules<typeof reactiveFormData> = [
         { key: 'name', type: 'required', message: '必填' },
         {
@@ -30,36 +31,26 @@ export const TagFrom = defineComponent({
       e.preventDefault();
     };
     return () => (
-      <form class={s.form} onSubmit={omSubmit}>
-        <div class={s.formRow}>
-          <label class={s.formLabel}>
-            <span class={s.formItem_name}>标签名</span>
-            <div class={s.formItem_value}>
-              <input v-model={reactiveFormData.name} class={[s.formItem, s.input, s.error]}></input>
-            </div>
-            <div class={s.formItem_errorHint}>
-              <span>{reactiveErrors['name'] ? reactiveErrors['name'][0] : '　'}</span>
-            </div>
-          </label>
-        </div>
-        <div class={s.formRow}>
-          <label class={s.formLabel}>
-            <span class={s.formItem_name}>符号 {reactiveFormData.sign}</span>
-            <div class={s.formItem_value}>
-              <EmojiSelect v-model={reactiveFormData.sign} class={[s.formItem, s.emojiList, s.error]} />
-            </div>
-            <div class={s.formItem_errorHint}>
-              <span>{reactiveErrors['sign'] ? reactiveErrors['sign']?.[0] : '　'}</span>
-            </div>
-          </label>
-        </div>
-        <p class={s.tips}>记账时长按标签即可进行编辑</p>
-        <div class={s.formRow}>
-          <div class={s.formItem_value}>
-            <Button class={[s.formItem, s.button]}>确定</Button>
-          </div>
-        </div>
-      </form>
+      <Form onSubmit={onSubmit}>
+        <FormItem
+          label="标签名"
+          type="text"
+          v-model={reactiveFormData.name}
+          error={reactiveErrors['name'] ? reactiveErrors['name'][0] : '　'}
+        />
+        <FormItem
+          label={'符号' + reactiveFormData.sign}
+          type="emojiSelect"
+          v-model={reactiveFormData.sign}
+          error={reactiveErrors['sign'] ? reactiveErrors['sign'][0] : '　'}
+        />
+        <FormItem>
+          <p class={s.tips}>记账时长按标签即可进行编辑</p>
+        </FormItem>
+        <FormItem>
+          <Button class={[s.button]}>确定</Button>
+        </FormItem>
+      </Form>
     );
   },
 });

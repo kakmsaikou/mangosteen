@@ -1,4 +1,4 @@
-import { computed, defineComponent, ref } from 'vue';
+import { computed, defineComponent, PropType, ref } from 'vue';
 import s from './EmojiSelect.module.scss';
 import { emojiList } from './emojiList';
 
@@ -7,9 +7,12 @@ export const EmojiSelect = defineComponent({
     modelValue: {
       type: String,
     },
+    onUpdateModelValue: {
+      type: Function as PropType<(emoji: string) => void>
+    }
   },
   setup: (props, context) => {
-    const refSelect = ref(0);
+    const refSelected = ref(0);
     const table: [string, string[]][] = [
       ['表情', ['face-smiling', 'face-affection', 'face-tongue', 'face-hand', 'face-neutral-skeptical', 'face-sleepy', 'face-unwell', 'face-hat', 'face-glasses', 'face-concerned', 'face-negative', 'face-costume']],
       ['手势', ['hand-fingers-open', 'hand-fingers-partial', 'hand-single-finger', 'hand-fingers-closed', 'hands', 'hand-prop', 'body-parts']],
@@ -21,14 +24,18 @@ export const EmojiSelect = defineComponent({
       ['食物', ['food-fruit', 'food-vegetable', 'food-prepared', 'food-asian', 'food-marine', 'food-sweet']],
       ['运动', ['sport', 'game']],
     ];
-    const setCategory = (index: number) => {
-      refSelect.value = index;
-    };
-    const setEmoji = (emoji: string) => {
-      context.emit('update:modelValue', emoji);
-    };
+    const onClickTab = (index: number)=>{
+      refSelected.value = index
+    }
+    const onClickEmoji = (emoji: string)=>{
+      if(props.onUpdateModelValue){
+        props.onUpdateModelValue(emoji)
+      }else{
+        context.emit('update:modelValue', emoji)
+      }
+    }
     const emojis = computed(() => {
-      const selectedItem = table[refSelect.value][1];
+      const selectedItem = table[refSelected.value][1];
       return selectedItem.map(category =>
         emojiList
           .find(item => item[0] === category)?.[1]
@@ -36,7 +43,7 @@ export const EmojiSelect = defineComponent({
             <li
               class={item === props.modelValue ? s.selectedEmoji : ''}
               onClick={() => {
-                setEmoji(item);
+                onClickEmoji(item);
               }}
             >
               {item}
@@ -49,9 +56,9 @@ export const EmojiSelect = defineComponent({
         <nav>
           {table.map((item, index) => (
             <span
-              class={index === refSelect.value ? s.selected : ''}
+              class={index === refSelected.value ? s.selected : ''}
               onClick={() => {
-                setCategory(index);
+                onClickTab(index);
               }}
             >
               {item[0]}
