@@ -4,5 +4,6 @@
   .navBar {
     position: sticky;
     top: 0;
+    z-index:var(--z-index-navbar)
   }
 }
