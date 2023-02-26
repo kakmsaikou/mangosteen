@@ -1,7 +1,6 @@
 import { Overlay } from 'vant';
-import { defineComponent, reactive, ref, watchEffect } from 'vue';
+import { defineComponent, reactive, ref } from 'vue';
 import { MainLayout } from '../../layouts/MainLayout';
-import { Icon } from '../../shared/Icon';
 import { Tab, Tabs } from '../../shared/Tabs';
 import { Time } from '../../shared/time';
 import { ItemSummary } from './ItemSummary';
