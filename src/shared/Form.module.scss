@@ -33,6 +33,12 @@
     }
   }
 
+  &.verificationCodeInput {
+    flex-grow: 0;
+    width: 8em;
+    margin-right: 16px;
+  }
+
   &_value {
     display: flex;
     margin-top: 4px;

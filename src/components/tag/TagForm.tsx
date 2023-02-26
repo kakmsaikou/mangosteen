@@ -36,13 +36,13 @@ export const TagFrom = defineComponent({
           label="标签名"
           type="text"
           v-model={reactiveFormData.name}
-          error={reactiveErrors['name'] ? reactiveErrors['name'][0] : '　'}
+          error={reactiveErrors['name']?.[0]}
         />
         <FormItem
           label={'符号' + reactiveFormData.sign}
           type="emojiSelect"
           v-model={reactiveFormData.sign}
-          error={reactiveErrors['sign'] ? reactiveErrors['sign'][0] : '　'}
+          error={reactiveErrors['sign']?.[0]}
         />
         <FormItem>
           <p class={s.tips}>记账时长按标签即可进行编辑</p>
