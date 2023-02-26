@@ -44,7 +44,7 @@ export const ItemList = defineComponent({
             <>
               <Tabs
                 v-model:selected={refSelected.value}
-                classPrefix={'customTabs'}
+                classPrefix='customTabs'
                 onUpdate:selected={onSelected}
               >
                 {/* TODO 遍历 */}
