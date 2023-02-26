@@ -53,7 +53,7 @@ export const ItemCreate = defineComponent({
           icon: () => <Icon name="left" class={s.navIcon} />,
           default: () => (
             <div class={s.wrapper}>
-              <Tabs v-model:selected={refKind.value} class={s.tabs}>
+              <Tabs v-model:selected={refKind.value} onUpdate:selected={()=>{console.log(11)}} class={s.tabs}>
                 <Tab name="支出" class={s.tags_wrapper}>
                   <div class={s.tag}>
                     <div class={s.sign}>
