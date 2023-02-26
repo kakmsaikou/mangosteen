@@ -32,6 +32,9 @@ export const ItemList = defineComponent({
       e.preventDefault();
       refOverlayVisible.value = false;
     };
+    const clickCustomTimeButton = () => {
+      if (refSelected.value === '自定义时间') refOverlayVisible.value = true;
+    };
     return () => (
       <MainLayout>
         {{
@@ -39,8 +42,10 @@ export const ItemList = defineComponent({
           icon: () => <Icon name="menu" />,
           default: () => (
             <>
-              <Tabs v-model:selected={refSelected.value} classPrefix={'customTabs'}
-              onUpdate:selected={()=>{refOverlayVisible.value = true}}
+              <Tabs
+                v-model:selected={refSelected.value}
+                classPrefix={'customTabs'}
+                onUpdate:selected={clickCustomTimeButton}
               >
                 {/* TODO 遍历 */}
                 <Tab name="本月">
