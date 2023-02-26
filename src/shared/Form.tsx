@@ -34,6 +34,7 @@ export const FormItem = defineComponent({
     error: {
       type: String,
     },
+    placeholder: String,
   },
   emits: ['update:modelValue'],
   setup: (props, context) => {
@@ -44,6 +45,7 @@ export const FormItem = defineComponent({
           return (
             <input
               class={[s.formItem, s.input]}
+              placeholder={props.placeholder}
               value={props.modelValue}
               onInput={(e: any) => context.emit('update:modelValue', e.target.value)}
             />
@@ -61,21 +63,23 @@ export const FormItem = defineComponent({
             <>
               <input
                 class={[s.formItem, s.input, s.verificationCodeInput]}
+                placeholder={props.placeholder}
                 onInput={(e: any) => context.emit('update:modelValue', e.target.value)}
               />
-              <Button>提交</Button>
+              <Button>发送验证码</Button>
             </>
           );
         case 'date':
           return (
             <>
               <input
+                class={[s.formItem, s.input]}
+                placeholder={props.placeholder}
                 readonly={true}
                 value={props.modelValue}
                 onClick={() => {
                   refDateVisible.value = true;
                 }}
-                class={[s.formItem, s.input]}
               />
               <Popup position="bottom" v-model:show={refDateVisible.value}>
                 <DatetimePicker
