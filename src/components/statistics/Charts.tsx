@@ -17,18 +17,17 @@ export const Charts = defineComponent({
   setup: () => {
     const category = ref('expenses');
     const refDiv = ref<HTMLDivElement>();
+    const refDiv2 = ref<HTMLDivElement>();
     onMounted(() => {
-      // 基于准备好的dom，初始化echarts实例
       if (refDiv.value === undefined) return;
-      var myChart = echarts.init(refDiv.value);
-      // 绘制图表
+      const myChart = echarts.init(refDiv.value);
       myChart.setOption({
         grid: [
           {
             left: 0,
             top: 0,
             right: 0,
-            button: 20
+            button: 20,
           },
         ],
         xAxis: {
@@ -46,6 +45,41 @@ export const Charts = defineComponent({
         ],
       });
     });
+    onMounted(() => {
+      if (refDiv2.value === undefined) return;
+      const myChart = echarts.init(refDiv2.value);
+      myChart.setOption({
+        grid: [
+          {
+            left: 0,
+            top: 0,
+            right: 0,
+            button: 0,
+          },
+        ],
+        series: [
+          {
+            name: 'Access From',
+            type: 'pie',
+            radius: '50%',
+            data: [
+              { value: 1048, name: 'Search Engine' },
+              { value: 735, name: 'Direct' },
+              { value: 580, name: 'Email' },
+              { value: 484, name: 'Union Ads' },
+              { value: 300, name: 'Video Ads' }
+            ],
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
+            }
+          }
+        ]
+      });
+    });
     return () => (
       <div class={s.wrapper}>
         <FormItem
@@ -58,6 +92,7 @@ export const Charts = defineComponent({
           v-model={category.value}
         />
         <div class={s.demo} ref={refDiv}></div>
+        <div class={s.demo2} ref={refDiv2}></div>
       </div>
     );
   },
