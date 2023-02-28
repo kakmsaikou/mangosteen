@@ -36,6 +36,7 @@ export const FormItem = defineComponent({
     },
     placeholder: String,
     options: Array as PropType<Array<{ value: string; text: string }>>,
+    onClick: Function as PropType<() => void>,
   },
   emits: ['update:modelValue'],
   setup: (props, context) => {
@@ -48,7 +49,7 @@ export const FormItem = defineComponent({
               class={[s.formItem, s.input]}
               placeholder={props.placeholder}
               value={props.modelValue}
-              onInput={(e) => context.emit('update:modelValue', (e.target as HTMLInputElement).value)}
+              onInput={e => context.emit('update:modelValue', (e.target as HTMLInputElement).value)}
             />
           );
         case 'emojiSelect':
@@ -65,9 +66,11 @@ export const FormItem = defineComponent({
               <input
                 class={[s.formItem, s.input, s.verificationCodeInput]}
                 placeholder={props.placeholder}
-                onInput={(e) => context.emit('update:modelValue', (e.target as HTMLInputElement).value)}
+                onInput={e =>
+                  context.emit('update:modelValue', (e.target as HTMLInputElement).value)
+                }
               />
-              <Button>发送验证码</Button>
+              <Button onClick={props.onClick}>发送验证码</Button>
             </>
           );
 
