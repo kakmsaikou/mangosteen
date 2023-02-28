@@ -34,12 +34,16 @@ export const SignInPage = defineComponent({
         ])
       );
     };
+    const onError = (error: any)=>{
+      if(error.response.status === 422){
+        Object.assign(reactiveErrors, error.response.data.errors)
+      }
+      throw error
+    }
     const onClickSendVerificationCode = async () => {
       const response = await http
-        .post('/api/v1/validation_codes', { email: formData.email })
-        .catch(() => {
-          //失败
-        });
+        .post('/validation_codes', { email: formData.email })
+        .catch(onError)
       refVerificationCode.value.startCountDown();
     };
     return () => (
