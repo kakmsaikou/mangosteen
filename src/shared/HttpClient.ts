@@ -48,7 +48,6 @@ export const http = new Http('/api/v1');
 // 拦截器
 http.instance.interceptors.response.use(
   response => {
-    console.log(response);
     return response;
   },
   error => {

@@ -23,6 +23,9 @@ export const routes: RouteRecordRaw[] = [
   {
     path: '/welcome',
     component: WelcomePage,
+    beforeEnter: (to, from, next) => {
+      localStorage.getItem('skipFeatures') === 'yes' ? next('/start') : next();
+    },
     children: [
       { path: '', redirect: '/welcome/1' },
       {
@@ -65,8 +68,11 @@ export const routes: RouteRecordRaw[] = [
     ],
   },
   {
-    path: '/sign_in', component: SignInPage
-  },{
-    path: '/statistics', component: StatisticsPage
-  }
+    path: '/sign_in',
+    component: SignInPage,
+  },
+  {
+    path: '/statistics',
+    component: StatisticsPage,
+  },
 ];
