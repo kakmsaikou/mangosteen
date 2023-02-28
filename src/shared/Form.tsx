@@ -1,3 +1,4 @@
+import { number } from 'echarts';
 import { DatetimePicker, Popup } from 'vant';
 import { computed, defineComponent, PropType, ref } from 'vue';
 import { Button } from './Button';
@@ -37,9 +38,27 @@ export const FormItem = defineComponent({
     placeholder: String,
     options: Array as PropType<Array<{ value: string; text: string }>>,
     onClick: Function as PropType<() => void>,
+    countForm: {
+      type: Number,
+      default: 60,
+    },
   },
   emits: ['update:modelValue'],
   setup: (props, context) => {
+    const timer = ref<number>();
+    const count = ref<number>(props.countForm);
+    const isCounting = computed(() => !!timer.value);
+    const onClickSendVerificationCode = () => {
+      props.onClick?.();
+      timer.value = setInterval(()=>{
+        count.value -= 1
+        if(count.value === 0) {
+          clearInterval(timer.value)
+          timer.value = undefined
+          count.value = props.countForm
+        }
+      }, 1000)
+    };
     const refDateVisible = ref(false);
     const content = computed(() => {
       switch (props.type) {
@@ -70,7 +89,9 @@ export const FormItem = defineComponent({
                   context.emit('update:modelValue', (e.target as HTMLInputElement).value)
                 }
               />
-              <Button onClick={props.onClick}>发送验证码</Button>
+              <Button disabled={isCounting.value} onClick={onClickSendVerificationCode}>
+                {isCounting.value ? `${count.value}秒后可重新发送` : '发送验证码'}
+              </Button>
             </>
           );
 

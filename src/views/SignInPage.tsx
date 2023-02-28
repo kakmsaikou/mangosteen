@@ -33,8 +33,8 @@ export const SignInPage = defineComponent({
       );
     };
     const onClickSendVerificationCode = async () => {
-      const response = await axios.post('/api/v1/validation_codes', { email: formData.email });
-      console.log(response)
+      // const response = await axios.post('/api/v1/validation_codes', { email: formData.email });
+      // console.log(response)
     };
     return () => (
       <MainLayout>
@@ -62,6 +62,7 @@ export const SignInPage = defineComponent({
                   v-model={formData.code}
                   error={reactiveErrors.code?.[0]}
                   placeholder="请输入六位数字"
+                  countForm={30}
                 />
                 <FormItem class={s.loginInBtn}>
                   <Button>登陆</Button>
