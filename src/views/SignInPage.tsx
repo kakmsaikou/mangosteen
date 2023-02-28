@@ -5,8 +5,8 @@ import { Form, FormItem } from '../shared/Form';
 import { Icon } from '../shared/Icon';
 import { validate } from '../shared/validate';
 import s from './SignInPage.module.scss';
-import axios from 'axios';
 import { http } from '../shared/HttpClient';
+import { useBoolean } from '../hooks/useBoolean';
 
 export const SignInPage = defineComponent({
   setup: () => {
@@ -19,6 +19,7 @@ export const SignInPage = defineComponent({
       code: [],
     });
     const refVerificationCode = ref<any>('');
+    const { ref: refDisable, toggle, on:disabled, off:enabled } = useBoolean(false);
     const onSubmit = (e: Event) => {
       e.preventDefault();
       Object.assign(
@@ -34,16 +35,18 @@ export const SignInPage = defineComponent({
         ])
       );
     };
-    const onError = (error: any)=>{
-      if(error.response.status === 422){
-        Object.assign(reactiveErrors, error.response.data.errors)
+    const onError = (error: any) => {
+      if (error.response.status === 422) {
+        Object.assign(reactiveErrors, error.response.data.errors);
       }
-      throw error
-    }
+      throw error;
+    };
     const onClickSendVerificationCode = async () => {
+      disabled();
       const response = await http
         .post('/validation_codes', { email: formData.email })
         .catch(onError)
+        .finally(enabled);
       refVerificationCode.value.startCountDown();
     };
     return () => (
@@ -73,6 +76,7 @@ export const SignInPage = defineComponent({
                   v-model={formData.code}
                   error={reactiveErrors.code?.[0]}
                   placeholder="请输入六位数字"
+                  disabled={refDisable.value}
                   countForm={30}
                 />
                 <FormItem class={s.loginInBtn}>
