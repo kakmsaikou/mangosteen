@@ -48,17 +48,19 @@ export const FormItem = defineComponent({
     const timer = ref<number>();
     const count = ref<number>(props.countForm);
     const isCounting = computed(() => !!timer.value);
-    const onClickSendVerificationCode = () => {
-      props.onClick?.();
-      timer.value = setInterval(()=>{
-        count.value -= 1
-        if(count.value === 0) {
-          clearInterval(timer.value)
-          timer.value = undefined
-          count.value = props.countForm
+    const startCountDown = () => {
+      timer.value = setInterval(() => {
+        count.value -= 1;
+        if (count.value === 0) {
+          clearInterval(timer.value);
+          timer.value = undefined;
+          count.value = props.countForm;
         }
-      }, 1000)
+      }, 1000);
     };
+    context.expose({
+      startCountDown,
+    });
     const refDateVisible = ref(false);
     const content = computed(() => {
       switch (props.type) {
@@ -89,7 +91,7 @@ export const FormItem = defineComponent({
                   context.emit('update:modelValue', (e.target as HTMLInputElement).value)
                 }
               />
-              <Button disabled={isCounting.value} onClick={onClickSendVerificationCode}>
+              <Button disabled={isCounting.value} onClick={props.onClick}>
                 {isCounting.value ? `${count.value}秒后可重新发送` : '发送验证码'}
               </Button>
             </>
