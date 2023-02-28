@@ -5,6 +5,7 @@ import { Form, FormItem } from '../shared/Form';
 import { Icon } from '../shared/Icon';
 import { validate } from '../shared/validate';
 import s from './SignInPage.module.scss';
+import axios from 'axios';
 
 export const SignInPage = defineComponent({
   setup: () => {
@@ -31,6 +32,10 @@ export const SignInPage = defineComponent({
         ])
       );
     };
+    const onClickSendVerificationCode = async () => {
+      const response = await axios.post('/api/v1/validation_codes', { email: formData.email });
+      console.log(response)
+    };
     return () => (
       <MainLayout>
         {{
@@ -39,7 +44,7 @@ export const SignInPage = defineComponent({
           default: () => (
             <>
               <div class={s.logo}>
-                <Icon class={s.icon} name='mangosteen'/>
+                <Icon class={s.icon} name="mangosteen" />
                 <h1 class={s.appName}>山竹记账</h1>
               </div>
               <Form onSubmit={onSubmit}>
@@ -48,14 +53,15 @@ export const SignInPage = defineComponent({
                   type="text"
                   v-model={formData.email}
                   error={reactiveErrors.email?.[0]}
-                  placeholder='请输入邮箱，然后点击发送验证码'
+                  placeholder="请输入邮箱，然后点击发送验证码"
                 />
                 <FormItem
+                  onClick={onClickSendVerificationCode}
                   label="验证码"
                   type="verificationCode"
                   v-model={formData.code}
                   error={reactiveErrors.code?.[0]}
-                  placeholder='请输入六位数字'
+                  placeholder="请输入六位数字"
                 />
                 <FormItem class={s.loginInBtn}>
                   <Button>登陆</Button>
