@@ -87,6 +87,7 @@ export const FormItem = defineComponent({
           return (
             <>
               <input
+                value={props.modelValue}
                 class={[s.formItem, s.input, s.verificationCodeInput]}
                 placeholder={props.placeholder}
                 onInput={e =>

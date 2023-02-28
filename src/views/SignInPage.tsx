@@ -3,10 +3,11 @@ import { MainLayout } from '../layouts/MainLayout';
 import { Button } from '../shared/Button';
 import { Form, FormItem } from '../shared/Form';
 import { Icon } from '../shared/Icon';
-import { validate } from '../shared/validate';
+import { validate, hasError } from '../shared/validate';
 import s from './SignInPage.module.scss';
 import { http } from '../shared/HttpClient';
 import { useBoolean } from '../hooks/useBoolean';
+import { history } from '../shared/history';
 
 export const SignInPage = defineComponent({
   setup: () => {
@@ -19,8 +20,8 @@ export const SignInPage = defineComponent({
       code: [],
     });
     const refVerificationCode = ref<any>('');
-    const { ref: refDisable, toggle, on:disabled, off:enabled } = useBoolean(false);
-    const onSubmit = (e: Event) => {
+    const { ref: refDisable, toggle, on: disabled, off: enabled } = useBoolean(false);
+    const onSubmit = async (e: Event) => {
       e.preventDefault();
       Object.assign(
         reactiveErrors,
@@ -34,6 +35,11 @@ export const SignInPage = defineComponent({
           { key: 'code', type: 'required', message: '必填' },
         ])
       );
+      if (!hasError(reactiveErrors)) {
+        const response = await http.post<{ jwt: string }>('/session', formData);
+        localStorage.setItem('jwt', response.data.jwt);
+        history.push('/')
+      }
     };
     const onError = (error: any) => {
       if (error.response.status === 422) {
@@ -80,7 +86,7 @@ export const SignInPage = defineComponent({
                   countForm={30}
                 />
                 <FormItem class={s.loginInBtn}>
-                  <Button>登陆</Button>
+                  <Button type="submit">登陆</Button>
                 </FormItem>
               </Form>
             </>
