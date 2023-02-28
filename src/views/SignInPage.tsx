@@ -6,11 +6,12 @@ import { Icon } from '../shared/Icon';
 import { validate } from '../shared/validate';
 import s from './SignInPage.module.scss';
 import axios from 'axios';
+import { http } from '../shared/HttpClient';
 
 export const SignInPage = defineComponent({
   setup: () => {
     const formData = reactive({
-      email: '',
+      email: 'youjosaikou@qq.com',
       code: '',
     });
     const reactiveErrors = reactive({
@@ -34,7 +35,7 @@ export const SignInPage = defineComponent({
       );
     };
     const onClickSendVerificationCode = async () => {
-      const response = await axios
+      const response = await http
         .post('/api/v1/validation_codes', { email: formData.email })
         .catch(() => {
           //失败
