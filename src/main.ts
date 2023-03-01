@@ -1,31 +1,27 @@
-import {  fetchLoggedStatus, loggedStatusPromise } from './shared/me';
-import { Form } from './shared/Form';
+import { fetchLoggedStatus, loggedStatusPromise } from './shared/me';
 import { routes } from './config/routes';
 import { createApp } from 'vue';
 import { App } from './App';
 import { createRouter } from 'vue-router';
 import { history } from './shared/history';
 import '@svgstore';
-import { http } from './shared/Http';
 
 const router = createRouter({ history, routes });
 
-fetchLoggedStatus()
+fetchLoggedStatus();
 
-router.beforeEach(async (to, Form) => {
+router.beforeEach(to => {
   if (
-    to.path === '/' ||
+    ['/', 'start'].includes(to.path) ||
     to.path.startsWith('/welcome') ||
-    to.path.startsWith('/sign_in') ||
-    to.path === '/start'
+    to.path.startsWith('/sign_in')
   ) {
     return true;
   } else {
-    const path = await loggedStatusPromise!.then(
+    return loggedStatusPromise!.then(
       () => true,
       () => '/sign_in?return_to' + to.path
     );
-    return path;
   }
 });
 

@@ -1,4 +1,11 @@
-import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
+import axios, {
+  AxiosError,
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse,
+} from 'axios';
+import { mockSession, mockTagIndex } from '../mock/mock';
+
 type JSONValue =
   | string
   | number
@@ -64,6 +71,25 @@ export class Http {
   }
 }
 
+const mock = (response: AxiosResponse) => {
+  if (
+    location.hostname !== 'localhost' &&
+    location.hostname !== '127.0.0.1' &&
+    location.hostname !== '192.168.3.57'
+  ) {
+    return false;
+  }
+  switch (response.config?.params?._mock) {
+    case 'tagIndex':
+      [response.status, response.data] = mockTagIndex(response.config);
+      return true;
+    case 'session':
+      [response.status, response.data] = mockSession(response.config);
+      return true;
+  }
+  return false;
+};
+
 export const http = new Http('/api/v1');
 
 http.instance.interceptors.request.use(config => {
@@ -76,8 +102,21 @@ http.instance.interceptors.request.use(config => {
 
 http.instance.interceptors.response.use(
   response => {
+    // 篡改 response
+    mock(response);
     return response;
   },
+  error => {
+    if (mock(error.response)) {
+      return error.response;
+    } else {
+      throw error;
+    }
+  }
+);
+
+http.instance.interceptors.response.use(
+  response => response,
   error => {
     if (error.response) {
       const axiosError = error as AxiosError;
