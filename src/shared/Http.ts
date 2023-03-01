@@ -1,5 +1,11 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
-type JSONValue = string | number | null | boolean | JSONValue[] | { [key: string]: JSONValue };
+type JSONValue =
+  | string
+  | number
+  | null
+  | boolean
+  | JSONValue[]
+  | { [key: string]: JSONValue };
 
 export class Http {
   instance: AxiosInstance;
@@ -15,7 +21,12 @@ export class Http {
     query?: Record<string, string>,
     config?: Omit<AxiosRequestConfig, 'url' | 'method' | 'params'>
   ) {
-    return this.instance.request<R>({ ...config, url, method: 'GET', params: query });
+    return this.instance.request<R>({
+      ...config,
+      url,
+      method: 'GET',
+      params: query,
+    });
   }
   // create
   post<R = unknown>(
@@ -31,7 +42,12 @@ export class Http {
     data?: Record<string, JSONValue>,
     config?: Omit<AxiosRequestConfig, 'url' | 'method' | 'data'>
   ) {
-    return this.instance.request<R>({ ...config, url, method: 'PATCH', data });
+    return this.instance.request<R>({
+      ...config,
+      url,
+      method: 'PATCH',
+      data,
+    });
   }
   // delete
   delete<R = unknown>(
@@ -39,13 +55,26 @@ export class Http {
     query?: Record<string, string>,
     config?: Omit<AxiosRequestConfig, 'url' | 'method' | 'params'>
   ) {
-    return this.instance.request<R>({ ...config, url, method: 'DELETE', params: query });
+    return this.instance.request<R>({
+      ...config,
+      url,
+      method: 'DELETE',
+      params: query,
+    });
   }
 }
 
 export const http = new Http('/api/v1');
 
-// 拦截器
+http.instance.interceptors.request.use(config => {
+  const jwt = localStorage.getItem('jwt');
+  if (jwt) {
+    config.headers!.Authorization = `Bearer ${jwt}`;
+  }
+  console.log(config.headers)
+  return config;
+});
+
 http.instance.interceptors.response.use(
   response => {
     return response;
@@ -53,8 +82,8 @@ http.instance.interceptors.response.use(
   error => {
     if (error.response) {
       const axiosError = error as AxiosError;
-      if(axiosError.response?.status === 429){
-        alert('请求太频繁了')
+      if (axiosError.response?.status === 429) {
+        alert('请求太频繁了');
       }
     }
     throw error;

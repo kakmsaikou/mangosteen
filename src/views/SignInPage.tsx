@@ -5,7 +5,7 @@ import { Form, FormItem } from '../shared/Form';
 import { Icon } from '../shared/Icon';
 import { validate, hasError } from '../shared/validate';
 import s from './SignInPage.module.scss';
-import { http } from '../shared/HttpClient';
+import { http } from '../shared/Http';
 import { useBoolean } from '../hooks/useBoolean';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -20,7 +20,12 @@ export const SignInPage = defineComponent({
       code: [],
     });
     const refVerificationCode = ref<any>('');
-    const { ref: refDisable, toggle, on: disabled, off: enabled } = useBoolean(false);
+    const {
+      ref: refDisable,
+      toggle,
+      on: disabled,
+      off: enabled,
+    } = useBoolean(false);
     const router = useRouter();
     const route = useRoute();
     const onSubmit = async (e: Event) => {
@@ -33,12 +38,19 @@ export const SignInPage = defineComponent({
         },
         validate(formData, [
           { key: 'email', type: 'required', message: '必填' },
-          { key: 'email', type: 'pattern', regex: /.+@.+/, message: '必须是邮箱地址' },
+          {
+            key: 'email',
+            type: 'pattern',
+            regex: /.+@.+/,
+            message: '必须是邮箱地址',
+          },
           { key: 'code', type: 'required', message: '必填' },
         ])
       );
       if (!hasError(reactiveErrors)) {
-        const response = await http.post<{ jwt: string }>('/session', formData).catch(onError);
+        const response = await http
+          .post<{ jwt: string }>('/session', formData)
+          .catch(onError);
         localStorage.setItem('jwt', response.data.jwt);
         // router.push('./sign_in?return_to=' + encodeURIComponent(route.fullPath))
         const returnTo = route.query.return_to?.toString();
