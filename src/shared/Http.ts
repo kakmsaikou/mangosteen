@@ -6,14 +6,6 @@ import axios, {
 } from 'axios';
 import { mockSession, mockTagIndex } from '../mock/mock';
 
-type JSONValue =
-  | string
-  | number
-  | null
-  | boolean
-  | JSONValue[]
-  | { [key: string]: JSONValue };
-
 export class Http {
   instance: AxiosInstance;
   constructor(baseURL: string) {
@@ -25,7 +17,7 @@ export class Http {
   // retrieve
   get<R = unknown>(
     url: string,
-    query?: Record<string, string>,
+    query?: Record<string, JSONValue>,
     config?: Omit<AxiosRequestConfig, 'url' | 'method' | 'params'>
   ) {
     return this.instance.request<R>({
