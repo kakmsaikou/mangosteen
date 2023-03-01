@@ -8,6 +8,7 @@ import s from './SignInPage.module.scss';
 import { http } from '../shared/Http';
 import { useBoolean } from '../hooks/useBoolean';
 import { useRoute, useRouter } from 'vue-router';
+import { refreshLoggedStatus } from '../shared/me';
 
 export const SignInPage = defineComponent({
   setup: () => {
@@ -54,6 +55,7 @@ export const SignInPage = defineComponent({
         localStorage.setItem('jwt', response.data.jwt);
         // router.push('./sign_in?return_to=' + encodeURIComponent(route.fullPath))
         const returnTo = route.query.return_to?.toString();
+        refreshLoggedStatus();
         router.push(returnTo || '/');
       }
     };

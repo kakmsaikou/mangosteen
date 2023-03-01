@@ -71,7 +71,6 @@ http.instance.interceptors.request.use(config => {
   if (jwt) {
     config.headers!.Authorization = `Bearer ${jwt}`;
   }
-  console.log(config.headers)
   return config;
 });
 
