@@ -27,14 +27,25 @@ export const Tabs = defineComponent({
           <ol class={[s.tabs_nav, CP + '_tabs_nav']}>
             {tabs.map(item => (
               <li
-                class={[item.props?.name === props.selected ? [s.selected, CP + '_selected'] : '', CP + '_tabs_nav_item']}
-                onClick={() => context.emit('update:selected', item.props?.name)}
+                class={[
+                  item.props?.name === props.selected
+                    ? [s.selected, CP + '_selected']
+                    : '',
+                  CP + '_tabs_nav_item',
+                ]}
+                onClick={() =>
+                  context.emit('update:selected', item.props?.name)
+                }
               >
                 {item.props?.name}
               </li>
             ))}
           </ol>
-          <div>{tabs.find(item => item.props?.name === props.selected)}</div>
+          <div>
+            {tabs.map(item => (
+              <div v-show={item.props?.name === props.selected}>{item}</div>
+            ))}
+          </div>
         </div>
       );
     };
@@ -48,6 +59,6 @@ export const Tab = defineComponent({
     },
   },
   setup: (props, context) => {
-    return () => <div>{context.slots.default?.()}</div>;
+    return () => <>{context.slots.default?.()}</>;
   },
 });

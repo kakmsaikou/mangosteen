@@ -19,15 +19,18 @@ export const mockTagIndex: Mock = config => {
   const per_page = 25;
   const count = 26;
   let id = 0;
+
   const createId = () => {
     id += 1;
     return id;
   };
+
   const createPager = (page = 1) => ({
     page,
     per_page,
     count,
   });
+
   const createTag = (n = 1, attrs?: any) =>
     Array.from({ length: n }).map(() => ({
       id: createId(),
@@ -36,10 +39,12 @@ export const mockTagIndex: Mock = config => {
       kind,
       ...attrs,
     }));
+
   const createBody = (n = 1, attrs?: any) => ({
     resources: createTag(n),
     pager: createPager(page),
   });
+  
   if (kind === 'expenses' && (!page || page === 1)) {
     return [200, createBody(25)];
   } else if (kind === 'expenses' && page === 2) {
