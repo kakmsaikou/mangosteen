@@ -1,15 +1,18 @@
-import { faker } from '@faker-js/faker'
+import { faker } from '@faker-js/faker';
 import { AxiosRequestConfig } from 'axios';
 
-type Mock = (config: AxiosRequestConfig) => [number, any]
+type Mock = (config: AxiosRequestConfig) => [number, any];
 
 faker.setLocale('zh_CN');
 
-export const mockSession: Mock = (config) => {
-  return [200, {
-    jwt: faker.random.word()
-  }]
-}
+export const mockSession: Mock = config => {
+  return [
+    200,
+    {
+      jwt: faker.random.word(),
+    },
+  ];
+};
 
 export const mockTagIndex: Mock = (config) => {
   let id = 0
@@ -27,10 +30,9 @@ export const mockTagIndex: Mock = (config) => {
     }))
 
   if (config.params.kind === 'expenses') {
-    return [200, { resources: createTag(7) }]
+    return [200, { resources: createTag(Math.round(Math.random()*30+1)) }]
   } else {
-    return [200, { resources: createTag(20) }]
+    return [200, { resources: createTag(Math.round(Math.random()*30+1)) }]
   }
 
 }
-
