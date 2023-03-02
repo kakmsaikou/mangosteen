@@ -7,13 +7,11 @@ import s from './ItemCreate.module.scss';
 import { Tags } from './Tags';
 
 export const ItemCreate = defineComponent({
-  props: {
-    name: {
-      type: String as PropType<string>,
-    },
-  },
   setup: () => {
     const refKind = ref('支出');
+    const refTagId = ref<number>();
+    const refOccurrenceTime = ref<string>(new Date().toISOString());
+    const refAmount = ref<string>('0');
 
     return () => (
       <MainLayout class={s.layout}>
@@ -30,14 +28,18 @@ export const ItemCreate = defineComponent({
                 class={s.tabs}
               >
                 <Tab name="支出">
-                  <Tags kind="expenses" />
+                  <div>{refAmount.value}</div>
+                  <Tags kind="expenses" v-model:selected={refTagId.value} />
                 </Tab>
                 <Tab name="收入">
-                  <Tags kind='income'/>
+                  <Tags kind="income" v-model:selected={refTagId.value} />
                 </Tab>
               </Tabs>
               <div class={s.inputPad_wrapper}>
-                <InputPad />
+                <InputPad
+                  v-model:occurrenceTime={refOccurrenceTime.value}
+                  v-model:amount={refAmount.value}
+                />
               </div>
             </div>
           ),

@@ -1,3 +1,4 @@
+import { number } from 'echarts';
 import { defineComponent, onUpdated, PropType } from 'vue';
 import { Button } from '../../shared/Button';
 import { http } from '../../shared/Http';
@@ -11,8 +12,9 @@ export const Tags = defineComponent({
       type: String as PropType<'expenses' | 'income'>,
       required: true,
     },
+    selected: Number,
   },
-  setup: props => {
+  setup: (props, context) => {
     const {
       tags: tags,
       hasMore: hasMore,
@@ -24,6 +26,9 @@ export const Tags = defineComponent({
         _mock: 'tagIndex',
       });
     });
+    const onSelect = (tagId: Number) => {
+      context.emit('update:selected', tagId);
+    };
     return () => (
       <>
         <div class={s.tags_wrapper}>
@@ -34,7 +39,12 @@ export const Tags = defineComponent({
             <div class={s.name}>新增</div>
           </div>
           {tags.value.map(tag => (
-            <div class={[s.tag, s.selected]}>
+            <div
+              class={[s.tag, props.selected === tag.id ? s.selected : '']}
+              onClick={() => {
+                onSelect(tag.id);
+              }}
+            >
               <div class={s.sign}>{tag.sign}</div>
               <div class={s.name}>{tag.name}</div>
             </div>

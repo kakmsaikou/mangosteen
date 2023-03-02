@@ -1,14 +1,16 @@
-import {defineComponent, ref} from 'vue';
-import {Icon} from '../../shared/Icon';
-import {Time} from '../../shared/time';
+import { defineComponent, onMounted, ref } from 'vue';
+import { Icon } from '../../shared/Icon';
+import { Time } from '../../shared/time';
 import s from './InputPad.module.scss';
-import {DatetimePicker, Popup} from 'vant';
+import { DatetimePicker, Popup } from 'vant';
 
 export const InputPad = defineComponent({
-  setup: () => {
-    const now = new Date();
-    const refDate = ref<Date>(now);
-    const refAmount = ref('0');
+  props: {
+    occurrenceTime: String,
+    amount: String,
+  },
+  setup: (props, context) => {
+    const refAmount = ref(props.amount?.toString() || '0');
     const appendText = (n: number | string) => {
       const nString = n.toString();
       const dotIndex = refAmount.value.indexOf('.');
@@ -24,25 +26,94 @@ export const InputPad = defineComponent({
       refAmount.value += n.toString();
     };
     const buttons = [
-      {text: '1', onClick: () => {appendText(1);},},
-      {text: '2', onClick: () => {appendText(2);},},
-      {text: '3', onClick: () => {appendText(3);},},
-      {text: '4', onClick: () => {appendText(4);},},
-      {text: '5', onClick: () => {appendText(5);},},
-      {text: '6', onClick: () => {appendText(6);},},
-      {text: '7', onClick: () => {appendText(7);},},
-      {text: '8', onClick: () => {appendText(8);},},
-      {text: '9', onClick: () => {appendText(9);},},
-      {text: '.', onClick: () => {appendText('.');},},
-      {text: '0', onClick: () => {appendText(0);},},
-      {text: '清空', onClick: () => {refAmount.value = '0';},},
-      {text: '提交', onClick: () => {}},
+      {
+        text: '1',
+        onClick: () => {
+          appendText(1);
+        },
+      },
+      {
+        text: '2',
+        onClick: () => {
+          appendText(2);
+        },
+      },
+      {
+        text: '3',
+        onClick: () => {
+          appendText(3);
+        },
+      },
+      {
+        text: '4',
+        onClick: () => {
+          appendText(4);
+        },
+      },
+      {
+        text: '5',
+        onClick: () => {
+          appendText(5);
+        },
+      },
+      {
+        text: '6',
+        onClick: () => {
+          appendText(6);
+        },
+      },
+      {
+        text: '7',
+        onClick: () => {
+          appendText(7);
+        },
+      },
+      {
+        text: '8',
+        onClick: () => {
+          appendText(8);
+        },
+      },
+      {
+        text: '9',
+        onClick: () => {
+          appendText(9);
+        },
+      },
+      {
+        text: '.',
+        onClick: () => {
+          appendText('.');
+        },
+      },
+      {
+        text: '0',
+        onClick: () => {
+          appendText(0);
+        },
+      },
+      {
+        text: '清空',
+        onClick: () => {
+          refAmount.value = '0';
+        },
+      },
+      {
+        text: '提交',
+        onClick: () => {
+          console.log('提交');
+          context.emit('update:amount', refAmount.value);
+        },
+      },
     ];
     const refIsDatetimePickerVisible = ref(false);
-    const showDatetimePicker = () => (refIsDatetimePickerVisible.value = true);
-    const hideDatetimePicker = () => (refIsDatetimePickerVisible.value = false);
+    const showDatetimePicker = () =>
+      (refIsDatetimePickerVisible.value = true);
+    const hideDatetimePicker = () =>
+      (refIsDatetimePickerVisible.value = false);
+
     const setDate = (date: Date) => {
-      refDate.value = date;
+      context.emit('update:occurrenceTime', date.toISOString());
       hideDatetimePicker();
     };
 
@@ -50,17 +121,17 @@ export const InputPad = defineComponent({
       <>
         <div class={s.dateAmountContainer}>
           <span class={s.date}>
-            <Icon name="date" class={s.icon}/>
+            <Icon name="date" class={s.icon} />
             <span>
               <span onClick={showDatetimePicker}>
-                {(new Time(refDate.value)).format()}
+                {new Time(props.occurrenceTime).format()}
               </span>
               <Popup
                 position="bottom"
                 v-model:show={refIsDatetimePickerVisible.value}
               >
                 <DatetimePicker
-                  value={refDate.value}
+                  value={props.occurrenceTime}
                   type="date"
                   title="选择年月日"
                   onConfirm={setDate}
@@ -72,7 +143,7 @@ export const InputPad = defineComponent({
           <span class={s.amount}>{refAmount.value}</span>
         </div>
         <div class={s.buttons}>
-          {buttons.map((button) => (
+          {buttons.map(button => (
             <button onClick={button.onClick}>{button.text}</button>
           ))}
         </div>
