@@ -1,5 +1,5 @@
-import { number } from 'echarts';
-import { defineComponent, onUpdated, PropType } from 'vue';
+import { defineComponent, PropType } from 'vue';
+import { RouterLink } from 'vue-router';
 import { Button } from '../../shared/Button';
 import { http } from '../../shared/Http';
 import { Icon } from '../../shared/Icon';
@@ -29,18 +29,23 @@ export const Tags = defineComponent({
     const onSelect = (tagId: Number) => {
       context.emit('update:selected', tagId);
     };
+    const isSelectedTag = (tag: Tag) => {
+      return props.selected === tag.id ? s.selected : '';
+    };
     return () => (
       <>
         <div class={s.tags_wrapper}>
-          <div class={s.tag}>
-            <div class={s.sign}>
-              <Icon name="add" class={s.createTag} />
+          <RouterLink to={`/tags/create?kind=${props.kind}`}>
+            <div class={s.tag}>
+              <div class={s.sign}>
+                <Icon name="add" class={s.createTag} />
+              </div>
+              <div class={s.name}>新增</div>
             </div>
-            <div class={s.name}>新增</div>
-          </div>
+          </RouterLink>
           {tags.value.map(tag => (
             <div
-              class={[s.tag, props.selected === tag.id ? s.selected : '']}
+              class={[s.tag, isSelectedTag(tag)]}
               onClick={() => {
                 onSelect(tag.id);
               }}
