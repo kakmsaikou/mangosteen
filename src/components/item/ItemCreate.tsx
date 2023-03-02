@@ -1,10 +1,9 @@
-import { AxiosError } from 'axios';
-import { Dialog } from 'vant';
 import { defineComponent, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { MainLayout } from '../../layouts/MainLayout';
 import { BackIcon } from '../../shared/BackIcon';
 import { http } from '../../shared/Http';
+import { myHandleError } from '../../shared/myHandleError';
 import { Tabs, Tab } from '../../shared/Tabs';
 import { InputPad } from './InputPad';
 import s from './ItemCreate.module.scss';
@@ -20,21 +19,13 @@ export const ItemCreate = defineComponent({
     });
 
     const router = useRouter();
-    const onError = (error: AxiosError<ResourceError>) => {
-      if (error.response?.status === 422) {
-        Dialog.alert({
-          title: '出错',
-          message: Object.values(error.response.data.errors).join('\n'),
-        });
-      }
-      throw error;
-    };
+
     const onSubmit = async () => {
       await http
         .post<Resource<Item>>('/items', formData, {
           params: { _mock: 'itemCreate' },
         })
-        .catch(onError);
+        .catch(myHandleError);
       router.push('/items');
     };
 
