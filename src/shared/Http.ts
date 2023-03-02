@@ -4,7 +4,7 @@ import axios, {
   AxiosRequestConfig,
   AxiosResponse,
 } from 'axios';
-import { mockSession, mockTagIndex } from '../mock/mock';
+import { mockItemCreate, mockSession, mockTagIndex } from '../mock/mock';
 
 export class Http {
   instance: AxiosInstance;
@@ -78,6 +78,9 @@ const mock = (response: AxiosResponse) => {
     case 'session':
       [response.status, response.data] = mockSession(response.config);
       return true;
+    case 'itemCreate':
+      [response.status, response.data] = mockItemCreate(response.config);
+      return true;
   }
   return false;
 };
@@ -94,26 +97,32 @@ http.instance.interceptors.request.use(config => {
 
 http.instance.interceptors.response.use(
   response => {
-    // 篡改 response
     mock(response);
-    return response;
+    if (response.status >= 400) {
+      throw { response };
+    } else {
+      return response;
+    }
   },
   error => {
-    if (mock(error.response)) {
-      return error.response;
-    } else {
+    mock(error.response);
+    if (error.response.status >= 400) {
       throw error;
+    } else {
+      return error.response;
     }
   }
 );
 
 http.instance.interceptors.response.use(
-  response => response,
+  response => {
+    return response;
+  },
   error => {
     if (error.response) {
       const axiosError = error as AxiosError;
       if (axiosError.response?.status === 429) {
-        alert('请求太频繁了');
+        alert('你太频繁了');
       }
     }
     throw error;
