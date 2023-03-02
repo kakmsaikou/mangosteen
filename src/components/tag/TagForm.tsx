@@ -1,6 +1,6 @@
 import { Button } from '../../shared/Button';
-import { defineComponent, reactive, toRaw } from 'vue';
-import { hasError, Rules, validate } from '../../shared/validate';
+import { defineComponent, onMounted, reactive } from 'vue';
+import { hasError, Rules } from '../../shared/validate';
 import s from './Tag.module.scss';
 import { Form, FormItem } from '../../shared/Form';
 import { useRoute, useRouter } from 'vue-router';
@@ -8,20 +8,22 @@ import { http } from '../../shared/Http';
 import { myHandleError } from '../../shared/myHandleError';
 
 export const TagFrom = defineComponent({
-  setup: () => {
+  props: {
+    id: Number,
+  },
+  setup: props => {
     const route = useRoute();
     const router = useRouter();
     if (!route.query.kind) {
       return () => <div>参数错误</div>;
     }
-    const formData = reactive({
+    const formData = reactive<Partial<Tag>>({
+      id: undefined,
       name: '',
       sign: '😀',
       kind: route.query.kind,
     });
-    const errors = reactive<{
-      [k in keyof typeof formData]?: string[];
-    }>({});
+    const errors = reactive<{ [k in keyof typeof formData]?: string[] }>({});
     const onSubmit = async (e: Event) => {
       const rules: Rules<typeof formData> = [
         { key: 'name', type: 'required', message: '必填' },
@@ -39,19 +41,31 @@ export const TagFrom = defineComponent({
       });
       // Object.assign(errors, validate(formData, rules));
       if (!hasError(errors)) {
-        console.log('noError');
-        const response = await http
-          .post('/tags', formData, {
-            params: { _mock: 'tagCreate' },
-          })
-          .catch(error => {
-            myHandleError(error, data => {
-              Object.assign(error, data.errors);
+        const promise = (await formData.id)
+          ? http.patch(`/tags/${formData.id}`, formData, {
+              params: { _mock: 'tagEdit' },
+            })
+          : http.post('/tags', formData, {
+              params: { _mock: 'tagCreate' },
             });
+        promise.catch(error => {
+          myHandleError(error, data => {
+            Object.assign(error, data.errors);
           });
+        });
         router.back();
       }
     };
+    onMounted(async () => {
+      if (!props.id) {
+        return;
+      }
+      const response = await http.get<Resource<Tag>>(`/tags/${props.id}`, {
+        _mock: 'tagShow',
+      });
+      console.log(response);
+      Object.assign(formData, await response.data.resource);
+    });
     return () => (
       <Form onSubmit={onSubmit}>
         <FormItem
