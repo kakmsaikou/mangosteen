@@ -25,73 +25,18 @@ export const InputPad = defineComponent({
       }
       refAmount.value += n.toString();
     };
+    const createTextObject = (text: string | number) => ({
+      text: String(text),
+      onClick: () => {
+        appendText(text);
+      },
+    });
+    // 数字键的顺序为 1~9、'.'、0
+    const numArr = Array.from({ length: 9 }, (_, i) =>
+      createTextObject(i + 1)
+    ).concat([createTextObject('.'), createTextObject(0)])
     const buttons = [
-      {
-        text: '1',
-        onClick: () => {
-          appendText(1);
-        },
-      },
-      {
-        text: '2',
-        onClick: () => {
-          appendText(2);
-        },
-      },
-      {
-        text: '3',
-        onClick: () => {
-          appendText(3);
-        },
-      },
-      {
-        text: '4',
-        onClick: () => {
-          appendText(4);
-        },
-      },
-      {
-        text: '5',
-        onClick: () => {
-          appendText(5);
-        },
-      },
-      {
-        text: '6',
-        onClick: () => {
-          appendText(6);
-        },
-      },
-      {
-        text: '7',
-        onClick: () => {
-          appendText(7);
-        },
-      },
-      {
-        text: '8',
-        onClick: () => {
-          appendText(8);
-        },
-      },
-      {
-        text: '9',
-        onClick: () => {
-          appendText(9);
-        },
-      },
-      {
-        text: '.',
-        onClick: () => {
-          appendText('.');
-        },
-      },
-      {
-        text: '0',
-        onClick: () => {
-          appendText(0);
-        },
-      },
+      ...numArr,
       {
         text: '清空',
         onClick: () => {
