@@ -13,6 +13,10 @@ body {
   visibility: hidden;
 }
 
+::-webkit-scrollbar {
+  display: none;
+}
+
 .customTabs_tabs_nav {
   justify-content: flex-start;
 
