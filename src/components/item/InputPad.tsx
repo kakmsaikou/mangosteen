@@ -55,7 +55,7 @@ export const InputPad = defineComponent({
         },
       },
     ];
-    
+
     const refIsDatetimePickerVisible = ref(false);
     const showDatetimePicker = () =>
       (refIsDatetimePickerVisible.value = true);

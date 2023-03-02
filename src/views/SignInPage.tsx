@@ -9,6 +9,7 @@ import { http } from '../shared/Http';
 import { useBoolean } from '../hooks/useBoolean';
 import { useRoute, useRouter } from 'vue-router';
 import { refreshLoggedStatus } from '../shared/me';
+import { BackIcon } from '../shared/BackIcon';
 
 export const SignInPage = defineComponent({
   setup: () => {
@@ -77,7 +78,7 @@ export const SignInPage = defineComponent({
       <MainLayout>
         {{
           title: () => '登陆',
-          icon: () => <Icon name="left" />,
+          icon: () => <BackIcon/>,
           default: () => (
             <>
               <div class={s.logo}>
