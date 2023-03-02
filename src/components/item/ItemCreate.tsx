@@ -9,8 +9,6 @@ import { InputPad } from './InputPad';
 import s from './ItemCreate.module.scss';
 import { Tags } from './Tags';
 
-console.log('11')
-
 export const ItemCreate = defineComponent({
   setup: () => {
     const formData = reactive({
