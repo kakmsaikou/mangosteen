@@ -3,13 +3,14 @@ import { defineComponent, reactive, toRaw } from 'vue';
 import { hasError, Rules, validate } from '../../shared/validate';
 import s from './Tag.module.scss';
 import { Form, FormItem } from '../../shared/Form';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { http } from '../../shared/Http';
 import { myHandleError } from '../../shared/myHandleError';
 
 export const TagFrom = defineComponent({
   setup: () => {
     const route = useRoute();
+    const router = useRouter();
     if (!route.query.kind) {
       return () => <div>参数错误</div>;
     }
@@ -33,22 +34,28 @@ export const TagFrom = defineComponent({
         { key: 'sign', type: 'required', message: '必填' },
       ];
       Object.assign(errors, {
-        name: undefined,
-        sign: undefined,
+        name: [],
+        sign: [],
       });
-      Object.assign(errors, validate(formData, rules));
+      // Object.assign(errors, validate(formData, rules));
       if (!hasError(errors)) {
+        console.log('noError');
         const response = await http
           .post('/tags', formData, {
             params: { _mock: 'tagCreate' },
           })
-          .catch(myHandleError);
+          .catch(error => {
+            myHandleError(error, data => {
+              Object.assign(error, data.errors);
+            });
+          });
+        router.back();
       }
     };
     return () => (
       <Form onSubmit={onSubmit}>
         <FormItem
-          label="标签名"
+          label="标签名(4个字符以内)"
           type="text"
           v-model={formData.name}
           error={errors['name']?.[0]}
@@ -63,7 +70,9 @@ export const TagFrom = defineComponent({
           <p class={s.tips}>记账时长按标签即可进行编辑</p>
         </FormItem>
         <FormItem>
-          <Button class={[s.button]}>确定</Button>
+          <Button type="submit" class={[s.button]}>
+            确定
+          </Button>
         </FormItem>
       </Form>
     );

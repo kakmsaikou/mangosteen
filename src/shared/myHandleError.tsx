@@ -1,12 +1,19 @@
-import { AxiosError } from "axios";
-import { Dialog } from "vant";
+import { AxiosError } from 'axios';
+import { Dialog } from 'vant';
 
-export const myHandleError = (error: AxiosError<ResourceError>) => {
+const popupDialog = (errorData: ResourceError) => {
+  Dialog.alert({
+    title: '出错',
+    message: Object.values(errorData.errors).join('\n'),
+  });
+};
+
+export const myHandleError = (
+  error: AxiosError<ResourceError>,
+  fn: (errors: ResourceError) => void = popupDialog
+) => {
   if (error.response?.status === 422) {
-    Dialog.alert({
-      title: '出错',
-      message: Object.values(error.response.data.errors).join('\n'),
-    });
+    fn(error.response.data);
   }
   throw error;
 };

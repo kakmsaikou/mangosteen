@@ -9,6 +9,8 @@ import { InputPad } from './InputPad';
 import s from './ItemCreate.module.scss';
 import { Tags } from './Tags';
 
+console.log('11')
+
 export const ItemCreate = defineComponent({
   setup: () => {
     const formData = reactive({
@@ -17,7 +19,6 @@ export const ItemCreate = defineComponent({
       amount: 0,
       happen_at: new Date().toISOString(),
     });
-
     const router = useRouter();
 
     const onSubmit = async () => {
@@ -25,7 +26,9 @@ export const ItemCreate = defineComponent({
         .post<Resource<Item>>('/items', formData, {
           params: { _mock: 'itemCreate' },
         })
-        .catch(myHandleError);
+        .catch(error => {
+          myHandleError(error);
+        });
       router.push('/items');
     };
 
@@ -33,7 +36,7 @@ export const ItemCreate = defineComponent({
       <MainLayout class={s.layout}>
         {{
           title: () => '记一笔',
-          icon: () => <BackIcon/>,
+          icon: () => <BackIcon />,
           default: () => (
             <div class={s.wrapper}>
               <Tabs v-model:selected={formData.kind} class={s.tabs}>
