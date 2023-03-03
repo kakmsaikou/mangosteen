@@ -36,9 +36,9 @@ export const mockItemIndex: Mock = config => {
     pager: createPaper(page),
     summary: {
       expenses: 9900,
-      income: 9900, 
-      balance:0
-    }
+      income: 9900,
+      balance: 0,
+    },
   });
   if (!page || page === 1) {
     return [200, createBody(25)];
@@ -68,6 +68,20 @@ export const mockTagShow: Mock = () => {
     ...attrs,
   });
   return [200, { resource: createTag() }];
+};
+
+export const mockItemSummary: Mock = config => {
+  return [
+    200,
+    {
+      groups: [
+        { happen_at: '2018-06-18T00:00:00.000+0800', amount: 100 },
+        { happen_at: '2018-06-22T00:00:00.000+0800', amount: 300 },
+        { happen_at: '2018-06-29T00:00:00.000+0800', amount: 200 },
+      ],
+      summary: 600,
+    },
+  ];
 };
 
 export const mockItemCreate: Mock = () => {
