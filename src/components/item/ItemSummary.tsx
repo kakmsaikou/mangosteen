@@ -1,5 +1,6 @@
-import { defineComponent, onMounted, PropType, ref } from 'vue';
+import { defineComponent, onMounted, PropType, reactive, ref } from 'vue';
 import { Button } from '../../shared/Button';
+import { Datetime } from '../../shared/DateTime';
 import { FloatButton } from '../../shared/FloatButton';
 import { http } from '../../shared/Http';
 import { Money } from '../../shared/Money';
@@ -21,7 +22,7 @@ export const ItemSummary = defineComponent({
     const hasMore = ref(false);
     const page = ref(0);
     const fetchItems = async () => {
-      if(!props.startDate || !props.endDate) return
+      if (!props.startDate || !props.endDate) return;
       const response = await http.get<Resources<Item>>('items', {
         happen_after: props.startDate,
         happen_before: props.endDate,
@@ -35,6 +36,18 @@ export const ItemSummary = defineComponent({
       page.value += 1;
     };
     onMounted(fetchItems);
+    const itemsBalance = reactive({
+      expenses:0, income:0,balance:0
+    })
+    onMounted(async () => {
+      const response = await http.get('/items/balance', {
+        happen_after: props.startDate,
+        happen_before: props.endDate,
+        page: page.value + 1,
+        _mock: 'itemIndexBalance',
+      })
+      Object.assign(itemsBalance, response.data)
+    })
     return () => (
       <div class={s.wrapper}>
         {items.value ? (
@@ -63,10 +76,12 @@ export const ItemSummary = defineComponent({
                     <div class={s.tagAndAmount}>
                       <span class={s.tag}>{item.tags_id[0]}</span>
                       <span class={s.amount}>
-                        ￥<Money value={item.amount}/>
+                        ￥<Money value={item.amount} />
                       </span>
                     </div>
-                    <div class={s.time}>{item.happen_at}</div>
+                    <div class={s.time}>
+                      <Datetime value={item.happen_at} />
+                    </div>
                   </div>
                 </li>
               ))}
