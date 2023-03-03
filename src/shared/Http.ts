@@ -4,7 +4,19 @@ import axios, {
   AxiosRequestConfig,
   AxiosResponse,
 } from 'axios';
-import { mockItemCreate, mockSession, mockTagIndex, mockTagShow } from '../mock/mock';
+import {
+  mockItemCreate,
+  mockItemIndex,
+  mockSession,
+  mockTagEdit,
+  mockTagIndex,
+  mockTagShow,
+} from '../mock/mock';
+
+type GetConfig = Omit<AxiosRequestConfig, 'params' | 'url' | 'method'>;
+type PostConfig = Omit<AxiosRequestConfig, 'url' | 'data' | 'method'>;
+type PatchConfig = Omit<AxiosRequestConfig, 'url' | 'data'>;
+type DeleteConfig = Omit<AxiosRequestConfig, 'params'>;
 
 export class Http {
   instance: AxiosInstance;
@@ -13,52 +25,47 @@ export class Http {
       baseURL,
     });
   }
-  // CRUD
-  // retrieve
   get<R = unknown>(
     url: string,
     query?: Record<string, JSONValue>,
-    config?: Omit<AxiosRequestConfig, 'url' | 'method' | 'params'>
+    config?: GetConfig
   ) {
     return this.instance.request<R>({
       ...config,
-      url,
-      method: 'GET',
+      url: url,
       params: query,
+      method: 'get',
     });
   }
-  // create
   post<R = unknown>(
     url: string,
     data?: Record<string, JSONValue>,
-    config?: Omit<AxiosRequestConfig, 'url' | 'method' | 'data'>
+    config?: PostConfig
   ) {
-    return this.instance.request<R>({ ...config, url, method: 'POST', data });
+    return this.instance.request<R>({ ...config, url, data, method: 'post' });
   }
-  // update
   patch<R = unknown>(
     url: string,
     data?: Record<string, JSONValue>,
-    config?: Omit<AxiosRequestConfig, 'url' | 'method' | 'data'>
+    config?: PatchConfig
   ) {
     return this.instance.request<R>({
       ...config,
       url,
-      method: 'PATCH',
       data,
+      method: 'patch',
     });
   }
-  // delete
   delete<R = unknown>(
     url: string,
     query?: Record<string, string>,
-    config?: Omit<AxiosRequestConfig, 'url' | 'method' | 'params'>
+    config?: DeleteConfig
   ) {
     return this.instance.request<R>({
       ...config,
-      url,
-      method: 'DELETE',
+      url: url,
       params: query,
+      method: 'delete',
     });
   }
 }
@@ -83,6 +90,12 @@ const mock = (response: AxiosResponse) => {
       return true;
     case 'tagShow':
       [response.status, response.data] = mockTagShow(response.config);
+      return true;
+    case 'tagEdit':
+      [response.status, response.data] = mockTagEdit(response.config);
+      return true;
+    case 'itemIndex':
+      [response.status, response.data] = mockItemIndex(response.config);
       return true;
   }
   return false;
@@ -116,7 +129,6 @@ http.instance.interceptors.response.use(
     }
   }
 );
-
 http.instance.interceptors.response.use(
   response => {
     return response;

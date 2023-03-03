@@ -1,6 +1,5 @@
 import { Overlay } from 'vant';
-import { DefineComponent, defineComponent, PropType, reactive, ref } from 'vue';
-import { ItemSummary } from '../components/item/ItemSummary';
+import { defineComponent, PropType, reactive, ref } from 'vue';
 import { Form, FormItem } from '../shared/Form';
 import { OverlayIcon } from '../shared/OverlayIcon';
 import { Tab, Tabs } from '../shared/Tabs';
@@ -12,11 +11,11 @@ const demo = defineComponent({
   props: {
     startDate: {
       type: String as PropType<string>,
-      required: true,
+      required: false,
     },
     endDate: {
       type: String as PropType<string>,
-      required: true,
+      required: false,
     },
   },
 });
@@ -31,7 +30,7 @@ export const TimeTabsLayout = defineComponent({
   setup: props => {
     const refSelected = ref('本月');
     const time = new Time();
-    const customTime = reactive({ start: new Time().format(), end: new Time().format() });
+    const customTime = reactive<{ start?: string; end?: string }>({});
     const timeList = [
       {
         start: time.firstDayOfMonth().format(),
@@ -67,16 +66,28 @@ export const TimeTabsLayout = defineComponent({
                 onUpdate:selected={onSelected}
               >
                 <Tab name="本月">
-                  <props.component startDate={timeList[0].start} endDate={timeList[0].end} />
+                  <props.component
+                    startDate={timeList[0].start}
+                    endDate={timeList[0].end}
+                  />
                 </Tab>
                 <Tab name="上月">
-                  <props.component startDate={timeList[1].start} endDate={timeList[1].end} />
+                  <props.component
+                    startDate={timeList[1].start}
+                    endDate={timeList[1].end}
+                  />
                 </Tab>
                 <Tab name="今年">
-                  <props.component startDate={timeList[2].start} endDate={timeList[2].end} />
+                  <props.component
+                    startDate={timeList[2].start}
+                    endDate={timeList[2].end}
+                  />
                 </Tab>
                 <Tab name="自定义时间">
-                  <props.component startDate={customTime.start} endDate={customTime.end} />
+                  <props.component
+                    startDate={customTime.start}
+                    endDate={customTime.end}
+                  />
                 </Tab>
               </Tabs>
               <Overlay show={refOverlayVisible.value} class={s.overlay}>
@@ -84,8 +95,16 @@ export const TimeTabsLayout = defineComponent({
                   <header>请选择时间</header>
                   <main>
                     <Form onSubmit={onSubmitCustomTime}>
-                      <FormItem label="开始时间" v-model={customTime.start} type="date" />
-                      <FormItem label="结束时间" v-model={customTime.end} type="date" />
+                      <FormItem
+                        label="开始时间"
+                        v-model={customTime.start}
+                        type="date"
+                      />
+                      <FormItem
+                        label="结束时间"
+                        v-model={customTime.end}
+                        type="date"
+                      />
                       <FormItem>
                         <div class={s.actions}>
                           <button

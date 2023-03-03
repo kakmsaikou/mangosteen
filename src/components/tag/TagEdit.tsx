@@ -11,7 +11,7 @@ import { myHandleError } from '../../shared/myHandleError';
 
 export const TagEdit = defineComponent({
   setup: () => {
-    const route = useRoute();
+  const route = useRoute();
     const router = useRouter();
     const numberId = parseInt(route.params.id!.toString());
     if (Number.isNaN(numberId)) {
