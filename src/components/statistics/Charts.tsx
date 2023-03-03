@@ -7,14 +7,8 @@ import { TransactionList } from './TransactionList';
 
 export const Charts = defineComponent({
   props: {
-    startDate: {
-      type: String as PropType<string>,
-      required: true,
-    },
-    endDate: {
-      type: String as PropType<string>,
-      required: true,
-    },
+    startDate: String as PropType<string>,
+    endDate: String as PropType<string>,
   },
   setup: () => {
     const category = ref('expenses');

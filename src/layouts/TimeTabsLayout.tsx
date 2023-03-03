@@ -32,7 +32,7 @@ export const TimeTabsLayout = defineComponent({
     const time = new Time();
     const tempTime = reactive<{ start?: string; end?: string }>({
       start: new Time().format(),
-      end: new Time().format()
+      end: new Time().format(),
     }); // 用于存放自定义时间的临时变量
     const customTime = reactive<{ start?: string; end?: string }>({});
     const timeList = [
@@ -69,6 +69,7 @@ export const TimeTabsLayout = defineComponent({
                 v-model:selected={refSelected.value}
                 classPrefix="customTabs"
                 onUpdate:selected={onSelected}
+                renderOnSelect={true}
               >
                 <Tab name="本月">
                   <props.component
