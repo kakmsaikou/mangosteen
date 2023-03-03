@@ -99,7 +99,6 @@ export const FormItem = defineComponent({
               </Button>
             </>
           );
-
         case 'select':
           return (
             <select
