@@ -8,18 +8,22 @@ export const Money = defineComponent({
     },
   },
   setup: props => {
-    const formattedAccount = computed(() => {
-        const nString = (props.value / 100).toString();
-        const dotIndex = nString.indexOf('.');
-        if (dotIndex < 0) {
-            return nString + '.00';
-        } else if (nString.substring(dotIndex).length === 2) {
-            return nString + '0';
-        } else {
-            return nString;
-        }
-    })
-
-    return () => <>{formattedAccount.value}</>;
+    return () => <>{formatAccount(props.value / 100)}</>;
   },
 });
+
+const formatAccount = (n: number) => {
+  const nString = n.toString();
+  const dotIndex = nString.indexOf('.');
+  if (dotIndex < 0) {
+    return nString + '.00';
+  } else if (nString.substring(dotIndex).length === 2) {
+    return nString + '0';
+  } else {
+    return nString;
+  }
+};
+
+export const getFormattedAccount = (n: number) => {
+  return formatAccount(n / 100);
+};
