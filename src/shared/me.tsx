@@ -1,21 +1,10 @@
 import { AxiosResponse } from 'axios';
 import { http } from './Http';
 
-export let loggedStatusPromise:
-  | Promise<
-      AxiosResponse<
-        {
-          resource: {
-            id: number;
-          };
-        },
-        any
-      >
-    >
-  | undefined;
+export let loggedStatusPromise:| Promise<AxiosResponse<Resource<User>>| undefined>
 
 export const refreshLoggedStatus = () => {
-  loggedStatusPromise = http.get<{ resource: { id: number } }>('/me');
+  loggedStatusPromise = http.get<Resource<User>>('/me');
   return loggedStatusPromise;
 };
 

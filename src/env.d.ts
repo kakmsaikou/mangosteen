@@ -37,7 +37,7 @@ type Item = {
   user_id: number;
   amount: number;
   tags_id: number[];
-  tags?: Tag[],
+  tags?: Tag[];
   happen_at: string;
   kind: expenses | income;
 };
@@ -47,5 +47,10 @@ type Resource<T> = {
 };
 
 type ResourceError = {
-  errors: Record<string, string[]>
-}
+  errors: Record<string, string[]>;
+};
+
+type User = {
+  id: number;
+  email: string;
+};

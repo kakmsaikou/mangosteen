@@ -5,7 +5,13 @@
   top: var(--top-safe-area-height);
   right: 0;
   width: 100%;
-  height: calc(100% - var(--top-safe-area-height));
+  height: calc(100% - var(--top-safe-area-height)); 
+}
+
+.email {
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .overlay {
