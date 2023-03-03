@@ -6,7 +6,7 @@ type Mock = (config: AxiosRequestConfig) => [number, any];
 faker.setLocale('zh_CN');
 
 export const mockItemIndex: Mock = config => {
-  const { kind, page } = config.params;
+  const { page } = config.params;
   const per_page = 25;
   const count = 26;
   const createPaper = (page = 1) => ({
@@ -14,16 +14,24 @@ export const mockItemIndex: Mock = config => {
     per_page,
     count,
   });
-  const createItem = (n = 1, attrs?: any) =>
+  const createTag = (attrs?: any) => ({
+    id: createId(),
+    name: faker.lorem.word(),
+    sign: faker.internet.emoji(),
+    kind: 'expenses',
+    ...attrs,
+  });
+  const createItem = (n = 1) =>
     Array.from({ length: n }).map(() => ({
       id: createId(),
       user_id: createId(),
       amount: Math.floor(Math.random() * 10000),
       tags_id: [createId()],
+      tags: [createTag()],
       happen_at: faker.date.past().toISOString(),
       kind: config.params.kind,
     }));
-  const createBody = (n = 1, attrs?: any) => ({
+  const createBody = (n = 1) => ({
     resources: createItem(n),
     pager: createPaper(page),
     summary: {
@@ -40,7 +48,7 @@ export const mockItemIndex: Mock = config => {
     return [200, {}];
   }
 };
-export const mockTagEdit: Mock = config => {
+export const mockTagEdit: Mock = () => {
   const createTag = (attrs?: any) => ({
     id: createId(),
     name: faker.lorem.word(),
@@ -51,7 +59,7 @@ export const mockTagEdit: Mock = config => {
   return [200, { resource: createTag() }];
 };
 
-export const mockTagShow: Mock = config => {
+export const mockTagShow: Mock = () => {
   const createTag = (attrs?: any) => ({
     id: createId(),
     name: faker.lorem.word(),
@@ -62,7 +70,7 @@ export const mockTagShow: Mock = config => {
   return [200, { resource: createTag() }];
 };
 
-export const mockItemCreate: Mock = config => {
+export const mockItemCreate: Mock = () => {
   return [
     200,
     {
@@ -80,7 +88,7 @@ export const mockItemCreate: Mock = config => {
     },
   ];
 };
-export const mockSession: Mock = config => {
+export const mockSession: Mock = () => {
   return [
     200,
     {
@@ -111,7 +119,7 @@ export const mockTagIndex: Mock = config => {
       kind: config.params.kind,
       ...attrs,
     }));
-  const createBody = (n = 1, attrs?: any) => ({
+  const createBody = (n = 1) => ({
     resources: createTag(n),
     pager: createPaper(page),
   });
