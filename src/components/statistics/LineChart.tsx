@@ -61,7 +61,7 @@ export const LineChart = defineComponent({
           {
             data: props.data,
             type: 'line',
-          },
+        },
         ],
       });
     });
