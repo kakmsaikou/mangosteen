@@ -51,10 +51,11 @@ export const LineChart = defineComponent({
   setup: props => {
     const refChartContainer = ref<HTMLDivElement>();
     const refChart = ref<echarts.ECharts>();
+    let chart: echarts.ECharts | undefined;
     onMounted(() => {
       if (refChartContainer.value === undefined) return;
-      refChart.value = echarts.init(refChartContainer.value);
-      refChart.value.setOption({
+      chart = echarts.init(refChartContainer.value);
+      chart.setOption({
         ...echartsOption,
         series: [
           {
@@ -67,7 +68,7 @@ export const LineChart = defineComponent({
     watch(
       () => props.data,
       () => {
-        refChart.value?.setOption({
+        chart?.setOption({
           series: [
             {
               data: props.data,

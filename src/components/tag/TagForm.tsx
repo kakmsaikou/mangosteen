@@ -63,7 +63,6 @@ export const TagFrom = defineComponent({
       const response = await http.get<Resource<Tag>>(`/tags/${props.id}`, {
         _mock: 'tagShow',
       });
-      console.log(response);
       Object.assign(formData, await response.data.resource);
     });
     return () => (
