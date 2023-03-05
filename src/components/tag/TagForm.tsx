@@ -42,12 +42,8 @@ export const TagFrom = defineComponent({
       // Object.assign(errors, validate(formData, rules));
       if (!hasError(errors)) {
         const promise = (await formData.id)
-          ? http.patch(`/tags/${formData.id}`, formData, {
-              params: { _mock: 'tagEdit' },
-            })
-          : http.post('/tags', formData, {
-              params: { _mock: 'tagCreate' },
-            });
+          ? http.patch(`/tags/${formData.id}`, formData, { _mock: 'tagEdit' })
+          : http.post('/tags', formData, { _mock: 'tagCreate' });
         promise.catch(error => {
           myHandleError(error, data => {
             Object.assign(error, data.errors);
@@ -60,22 +56,24 @@ export const TagFrom = defineComponent({
       if (!props.id) {
         return;
       }
-      const response = await http.get<Resource<Tag>>(`/tags/${props.id}`, {
-        _mock: 'tagShow',
-      });
+      const response = await http.get<Resource<Tag>>(
+        `/tags/${props.id}`,
+        {},
+        { _mock: 'tagShow' }
+      );
       Object.assign(formData, await response.data.resource);
     });
     return () => (
       <Form onSubmit={onSubmit}>
         <FormItem
-          label="标签名(4个字符以内)"
-          type="text"
+          label='标签名(4个字符以内)'
+          type='text'
           v-model={formData.name}
           error={errors['name']?.[0]}
         />
         <FormItem
           label={'符号' + formData.sign}
-          type="emojiSelect"
+          type='emojiSelect'
           v-model={formData.sign}
           error={errors['sign']?.[0]}
         />
@@ -83,7 +81,7 @@ export const TagFrom = defineComponent({
           <p class={s.tips}>记账时长按标签即可进行编辑</p>
         </FormItem>
         <FormItem>
-          <Button type="submit" class={[s.button]}>
+          <Button type='submit' class={[s.button]}>
             确定
           </Button>
         </FormItem>

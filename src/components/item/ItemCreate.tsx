@@ -21,9 +21,7 @@ export const ItemCreate = defineComponent({
 
     const onSubmit = async () => {
       await http
-        .post<Resource<Item>>('/items', formData, {
-          params: { _mock: 'itemCreate' },
-        })
+        .post<Resource<Item>>('/items', formData, { _mock: 'itemCreate' })
         .catch(error => {
           myHandleError(error);
         });
@@ -38,14 +36,14 @@ export const ItemCreate = defineComponent({
           default: () => (
             <div class={s.wrapper}>
               <Tabs v-model:selected={formData.kind} class={s.tabs}>
-                <Tab name="支出">
+                <Tab name='支出'>
                   <Tags
-                    kind="expenses"
+                    kind='expenses'
                     v-model:selected={formData.tag_id[0]}
                   />
                 </Tab>
-                <Tab name="收入">
-                  <Tags kind="income" v-model:selected={formData.tag_id[0]} />
+                <Tab name='收入'>
+                  <Tags kind='income' v-model:selected={formData.tag_id[0]} />
                 </Tab>
               </Tabs>
               <div class={s.inputPad_wrapper}>

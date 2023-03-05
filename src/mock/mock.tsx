@@ -6,32 +6,32 @@ type Mock = (config: AxiosRequestConfig) => [number, any];
 faker.setLocale('zh_CN');
 
 export const mockItemSummary: Mock = config => {
-  const { kind, group_by } = config.params;
-  if (config.params.group_by === 'happen_at' && kind === 'expenses') {
+  const { group_by, kind } = config.params;
+  if (group_by === 'happen_at' && kind === 'expenses') {
     return [
       200,
       {
         groups: [
-          { happen_at: '2023-03-18T00:00:00.000+0800', amount: 100 },
-          { happen_at: '2023-03-22T00:00:00.000+0800', amount: 300 },
-          { happen_at: '2023-03-29T00:00:00.000+0800', amount: 200 },
+          { happen_at: '2022-07-18T00:00:00.000+0800', amount: 100 },
+          { happen_at: '2022-07-22T00:00:00.000+0800', amount: 300 },
+          { happen_at: '2022-07-29T00:00:00.000+0800', amount: 200 },
         ],
         summary: 600,
       },
     ];
-  } else if (config.params.group_by === 'happen_at' && kind === 'income') {
+  } else if (group_by === 'happen_at' && kind === 'income') {
     return [
       200,
       {
         groups: [
-          { happen_at: '2023-03-01T00:00:00.000+0800', amount: 100 },
-          { happen_at: '2023-03-05T00:00:00.000+0800', amount: 300 },
-          { happen_at: '2023-03-29T00:00:00.000+0800', amount: 200 },
+          { happen_at: '2022-07-08T00:00:00.000+0800', amount: 100 },
+          { happen_at: '2022-07-12T00:00:00.000+0800', amount: 300 },
+          { happen_at: '2022-07-19T00:00:00.000+0800', amount: 200 },
         ],
         summary: 600,
       },
     ];
-  } else if (config.params.group_by === 'tag_id' && kind === 'expenses') {
+  } else if (group_by === 'tag_id' && kind === 'expenses') {
     return [
       200,
       {
@@ -63,20 +63,20 @@ export const mockItemSummary: Mock = config => {
           {
             tag_id: 1,
             tag: { id: 1, name: '交通', sign: faker.internet.emoji() },
-            amount: 500,
+            amount: 400,
           },
           {
             tag_id: 2,
             tag: { id: 2, name: '吃饭', sign: faker.internet.emoji() },
-            amount: 600,
+            amount: 300,
           },
           {
             tag_id: 3,
             tag: { id: 3, name: '购物', sign: faker.internet.emoji() },
-            amount: 1000,
+            amount: 200,
           },
         ],
-        summary: 2100,
+        summary: 900,
       },
     ];
   }

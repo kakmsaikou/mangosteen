@@ -68,8 +68,14 @@ export const SignInPage = defineComponent({
     };
     const onClickSendVerificationCode = async () => {
       disabled();
-      const response = await http
-        .post('/validation_codes', { email: formData.email })
+      await http
+        .post(
+          '/validation_codes',
+          { email: formData.email },
+          {
+            _autoLoading: true,
+          }
+        )
         .catch(onError)
         .finally(enabled);
       refVerificationCode.value.startCountDown();
@@ -78,34 +84,34 @@ export const SignInPage = defineComponent({
       <MainLayout>
         {{
           title: () => '登陆',
-          icon: () => <BackIcon/>,
+          icon: () => <BackIcon />,
           default: () => (
             <>
               <div class={s.logo}>
-                <Icon class={s.icon} name="mangosteen" />
+                <Icon class={s.icon} name='mangosteen' />
                 <h1 class={s.appName}>山竹记账</h1>
               </div>
               <Form onSubmit={onSubmit}>
                 <FormItem
-                  label="邮箱地址"
-                  type="text"
+                  label='邮箱地址'
+                  type='text'
                   v-model={formData.email}
                   error={reactiveErrors.email?.[0]}
-                  placeholder="请输入邮箱，然后点击发送验证码"
+                  placeholder='请输入邮箱，然后点击发送验证码'
                 />
                 <FormItem
                   ref={refVerificationCode}
                   onClick={onClickSendVerificationCode}
-                  label="验证码"
-                  type="verificationCode"
+                  label='验证码'
+                  type='verificationCode'
                   v-model={formData.code}
                   error={reactiveErrors.code?.[0]}
-                  placeholder="请输入六位数字"
+                  placeholder='请输入六位数字'
                   disabled={refDisable.value}
                   countForm={30}
                 />
                 <FormItem class={s.loginInBtn}>
-                  <Button type="submit">登陆</Button>
+                  <Button type='submit'>登陆</Button>
                 </FormItem>
               </Form>
             </>
