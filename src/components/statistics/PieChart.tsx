@@ -39,14 +39,12 @@ export const PieChart = defineComponent({
     onMounted(() => {
       if (refDiv2.value === undefined) return;
       // 基于准备好的dom，初始化echarts实例
-      console.log('onMounted');
       chart = echarts.init(refDiv2.value);
       chart.setOption(defaultOption);
     });
     watch(
       () => props.data,
       () => {
-        console.log(props.data);
         chart?.setOption({
           series: [
             {

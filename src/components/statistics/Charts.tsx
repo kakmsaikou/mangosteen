@@ -78,13 +78,23 @@ export const Charts = defineComponent({
       data2.value = response.data.groups;
     });
     const betterData2 = computed<{ name: string; value: number }[]>(() => {
-      const formattedData =  data2.value.map(item => ({
+      return data2.value.map(item => ({
         name: item.tag.name,
         value: item.amount,
       }));
-      return formattedData
     });
-
+    // ------------data3----------------
+    const betterData3 = computed<
+      { tag: Tag; amount: number; percent: number }[]
+    >(() => {
+      const total = data2.value.reduce((sum, item) => sum + item.amount, 0);
+      const formattedData3 = data2.value.map(item => ({
+        tag: item.tag,
+        amount: item.amount,
+        percent: Math.round((item.amount / total) * 100),
+      }));
+      return formattedData3;
+    });
     return () => (
       <div class={s.wrapper}>
         <FormItem
@@ -98,7 +108,7 @@ export const Charts = defineComponent({
         />
         <LineChart data={betterData1.value} />
         <PieChart data={betterData2.value} />
-        <TransactionList />
+        <TransactionList data={betterData3.value} />
       </div>
     );
   },
