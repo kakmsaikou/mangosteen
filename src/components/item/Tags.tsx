@@ -22,11 +22,14 @@ export const Tags = defineComponent({
       hasMore: hasMore,
       fetchTags: fetch,
     } = useTags(page => {
-      return http.get<Resources<Tag>>('/tags', {
-        kind: props.kind,
-        page: page + 1,
-        _mock: 'tagIndex',
-      });
+      return http.get<Resources<Tag>>(
+        '/tags',
+        {
+          kind: props.kind,
+          page: page + 1,
+        },
+        { _mock: 'tagIndex', _autoLoading: true }
+      );
     });
     const onSelect = (tagId: Number) => {
       context.emit('update:selected', tagId);
@@ -39,7 +42,9 @@ export const Tags = defineComponent({
     let currentTag: HTMLDivElement | undefined = undefined;
     const onLongPress = (tagId: number) => {
       const { fullPath } = router.currentRoute.value;
-      router.push(`/tags/${tagId}/edit?kind=${props.kind}&return_to${fullPath}`);
+      router.push(
+        `/tags/${tagId}/edit?kind=${props.kind}&return_to${fullPath}`
+      );
     };
     const onTouchStart = (e: TouchEvent, tag: Tag) => {
       currentTag = e.currentTarget as HTMLDivElement;
@@ -69,7 +74,7 @@ export const Tags = defineComponent({
           <RouterLink to={`/tags/create?kind=${props.kind}`}>
             <div class={s.tag}>
               <div class={s.sign}>
-                <Icon name="add" class={s.createTag} />
+                <Icon name='add' class={s.createTag} />
               </div>
               <div class={s.name}>新增</div>
             </div>

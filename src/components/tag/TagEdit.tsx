@@ -11,7 +11,7 @@ import { myHandleError } from '../../shared/myHandleError';
 
 export const TagEdit = defineComponent({
   setup: () => {
-  const route = useRoute();
+    const route = useRoute();
     const router = useRouter();
     const numberId = parseInt(route.params.id!.toString());
     if (Number.isNaN(numberId)) {
@@ -23,9 +23,13 @@ export const TagEdit = defineComponent({
         message: '你真的要删除吗？',
       });
       await http
-        .delete(`/tags/${numberId}`, {
-          withItems: options?.withItems ? 'true' : 'false',
-        })
+        .delete(
+          `/tags/${numberId}`,
+          {
+            withItems: options?.withItems ? 'true' : 'false',
+          },
+          { _autoLoading: true }
+        )
         .catch(myHandleError);
       router.back();
     };
