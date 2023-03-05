@@ -116,7 +116,7 @@ export const mockItemIndex: Mock = config => {
       tags: [createTag()],
       happen_at: faker.date.past().toISOString(),
       kind: config.params.kind,
-    }));
+    } as Item));
   const createBody = (n = 1, attrs?: any) => ({
     resources: createItem(n),
     pager: createPaper(page),
@@ -170,7 +170,7 @@ export const mockItemCreate: Mock = config => {
         created_at: '2022-07-03T15:35:56.301Z',
         updated_at: '2022-07-03T15:35:56.301Z',
         kind: 'expenses',
-      },
+      } as Item,
     },
   ];
 };
