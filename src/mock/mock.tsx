@@ -129,7 +129,7 @@ export const mockItemIndex: Mock = config => {
   if (!page || page === 1) {
     return [200, createBody(25)];
   } else if (page === 2) {
-    return [200, createBody(1)];
+    return [200, createBody(1)]
   } else {
     return [200, {}];
   }

@@ -5,9 +5,9 @@ import s from './welcome.module.scss';
 
 export const FourthActions: FunctionalComponent = () => {
   return <div class={s.actions}>
-    <SkipFeatures class={s.fake} to="/start">跳过</SkipFeatures>
-    <SkipFeatures to="/start">完成</SkipFeatures>
-    <SkipFeatures class={s.fake} to="/start">跳过</SkipFeatures>
+    <SkipFeatures class={s.fake} to="/items">跳过</SkipFeatures>
+    <SkipFeatures to="/items">完成</SkipFeatures>
+    <SkipFeatures class={s.fake} to="/items">跳过</SkipFeatures>
   </div>;
 };
 

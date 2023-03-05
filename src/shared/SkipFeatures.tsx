@@ -3,7 +3,7 @@ import { RouterLink } from 'vue-router';
 
 export const SkipFeatures = defineComponent({
   props: {
-    to: { type: String, default: '/start' },
+    to: { type: String, default: '/items' },
   },
   setup: (props, context) => {
     const onClick = () => {

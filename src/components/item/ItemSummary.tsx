@@ -6,10 +6,13 @@ import {
   ref,
   watch,
 } from 'vue';
+import { RouterLink } from 'vue-router';
 import { Button } from '../../shared/Button';
+import { Center } from '../../shared/Center';
 import { Datetime } from '../../shared/DateTime';
 import { FloatButton } from '../../shared/FloatButton';
 import { http } from '../../shared/Http';
+import { Icon } from '../../shared/Icon';
 import { Money } from '../../shared/Money';
 import s from './ItemSummary.module.scss';
 
@@ -84,7 +87,7 @@ export const ItemSummary = defineComponent({
     );
     return () => (
       <div class={s.wrapper}>
-        {items.value ? (
+        {items.value && items.value.length > 0 ? (
           <>
             <ul class={s.total}>
               <li>
@@ -135,9 +138,20 @@ export const ItemSummary = defineComponent({
             </div>
           </>
         ) : (
-          <div>记录为空</div>
+          <>
+            <Center class={s.piggy_wrapper}>
+              <Icon class={s.piggy} name='piggy' />
+            </Center>
+            <div class={s.button_wrapper}>
+              <Button class={s.button}>
+                <RouterLink to='/items/create'>开始记账</RouterLink>
+              </Button>
+            </div>
+          </>
         )}
-        <FloatButton iconName='add' />
+        <RouterLink to='/items/create'>
+          <FloatButton iconName='add' />
+        </RouterLink>
       </div>
     );
   },
