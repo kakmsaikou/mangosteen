@@ -1,4 +1,12 @@
-import { computed, defineComponent, onMounted, PropType, ref } from 'vue';
+import {
+  computed,
+  defineComponent,
+  onMounted,
+  onUpdated,
+  PropType,
+  ref,
+  watch,
+} from 'vue';
 import { FormItem } from '../../shared/Form';
 import s from './Charts.module.scss';
 import { LineChart } from './LineChart';
@@ -29,7 +37,7 @@ export const Charts = defineComponent({
     const kind = ref('expenses');
     // --------------data1--------------
     const data1 = ref<Data1>([]);
-    onMounted(async () => {
+    const fetchData1 = async () => {
       const response = await http.get<{ groups: Data1; summary: number }>(
         '/items/summary',
         {
@@ -41,7 +49,9 @@ export const Charts = defineComponent({
         }
       );
       data1.value = response.data.groups;
-    });
+    };
+    onMounted(fetchData1);
+    watch(() => kind.value, fetchData1);
     const betterData1 = computed<[string, number][]>(() => {
       if (!props.startDate || !props.endDate) {
         return [];
@@ -64,7 +74,7 @@ export const Charts = defineComponent({
     });
     // --------------data2--------------
     const data2 = ref<Data2>([]);
-    onMounted(async () => {
+    const fetchData2 = async () => {
       const response = await http.get<{ groups: Data2; summary: number }>(
         '/items/summary',
         {
@@ -76,7 +86,9 @@ export const Charts = defineComponent({
         }
       );
       data2.value = response.data.groups;
-    });
+    };
+    onMounted(fetchData2);
+    watch(() => kind.value, fetchData2);
     const betterData2 = computed<{ name: string; value: number }[]>(() => {
       return data2.value.map(item => ({
         name: item.tag.name,

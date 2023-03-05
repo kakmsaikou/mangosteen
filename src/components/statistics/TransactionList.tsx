@@ -15,7 +15,6 @@ export const TransactionList = defineComponent({
       <div class={s.wrapper}>
         {props.data && props.data.length > 0 ? (
           props.data.map(({ tag, amount, percent }) => {
-            console.log(percent);
             return (
               <div class={s.topItem}>
                 <div class={s.sign}>{tag.sign}</div>
