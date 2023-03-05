@@ -7,7 +7,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { http } from '../../shared/Http';
 import { myHandleError } from '../../shared/myHandleError';
 
-export const TagFrom = defineComponent({
+export const TagForm = defineComponent({
   props: {
     id: Number,
   },
