@@ -28,10 +28,12 @@ export const FormItem = defineComponent({
       type: String,
     },
     modelValue: {
-      type: [String, Number],
+      type: [String, Number, Date],
     },
     type: {
-      type: String as PropType<'text' | 'emojiSelect' | 'date' | 'verificationCode' | 'select'>,
+      type: String as PropType<
+        'text' | 'emojiSelect' | 'date' | 'verificationCode' | 'select'
+      >,
     },
     error: {
       type: String,
@@ -72,14 +74,21 @@ export const FormItem = defineComponent({
               class={[s.formItem, s.input]}
               placeholder={props.placeholder}
               value={props.modelValue}
-              onInput={e => context.emit('update:modelValue', (e.target as HTMLInputElement).value)}
+              onInput={e =>
+                context.emit(
+                  'update:modelValue',
+                  (e.target as HTMLInputElement).value
+                )
+              }
             />
           );
         case 'emojiSelect':
           return (
             <EmojiSelect
               modelValue={props.modelValue?.toString()}
-              onUpdateModelValue={value => context.emit('update:modelValue', value)}
+              onUpdateModelValue={value =>
+                context.emit('update:modelValue', value)
+              }
               class={[s.formItem, s.emojiList, s.error]}
             />
           );
@@ -91,11 +100,19 @@ export const FormItem = defineComponent({
                 class={[s.formItem, s.input, s.verificationCodeInput]}
                 placeholder={props.placeholder}
                 onInput={e =>
-                  context.emit('update:modelValue', (e.target as HTMLInputElement).value)
+                  context.emit(
+                    'update:modelValue',
+                    (e.target as HTMLInputElement).value
+                  )
                 }
               />
-              <Button disabled={isCounting.value || props.disabled} onClick={props.onClick}>
-                {isCounting.value ? `${count.value}秒后可重新发送` : '发送验证码'}
+              <Button
+                disabled={isCounting.value || props.disabled}
+                onClick={props.onClick}
+              >
+                {isCounting.value
+                  ? `${count.value}秒后可重新发送`
+                  : '发送验证码'}
               </Button>
             </>
           );
@@ -105,7 +122,10 @@ export const FormItem = defineComponent({
               class={[s.formItem, s.select]}
               value={props.modelValue}
               onChange={e => {
-                context.emit('update:modelValue', (e.target as HTMLInputElement).value);
+                context.emit(
+                  'update:modelValue',
+                  (e.target as HTMLInputElement).value
+                );
               }}
             >
               {props.options?.map(option => (
@@ -125,13 +145,18 @@ export const FormItem = defineComponent({
                   refDateVisible.value = true;
                 }}
               />
-              <Popup position="bottom" v-model:show={refDateVisible.value}>
+              <Popup position='bottom' v-model:show={refDateVisible.value}>
                 <DatetimePicker
-                  value={props.modelValue}
-                  type="date"
-                  title="选择年月日"
+                  modelValue={
+                    props.modelValue ? new Date(props.modelValue) : new Date()
+                  }
+                  type='date'
+                  title='选择年月日'
                   onConfirm={(date: Date) => {
-                    context.emit('update:modelValue', new Time(date).format());
+                    context.emit(
+                      'update:modelValue',
+                      new Time(date).format()
+                    );
                     refDateVisible.value = false;
                   }}
                   onCancel={() => (refDateVisible.value = false)}
