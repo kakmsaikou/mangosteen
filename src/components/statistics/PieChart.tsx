@@ -2,6 +2,7 @@ import { defineComponent, onMounted, PropType, ref, watch } from 'vue';
 import s from './PieChart.module.scss';
 import * as echarts from 'echarts';
 import { getFormattedAccount } from '../../shared/Money';
+
 const defaultOption = {
   tooltip: {
     trigger: 'item',
@@ -25,6 +26,7 @@ const defaultOption = {
     },
   ],
 };
+
 export const PieChart = defineComponent({
   props: {
     data: {
@@ -35,16 +37,16 @@ export const PieChart = defineComponent({
     const refDiv2 = ref<HTMLDivElement>();
     let chart: echarts.ECharts | undefined = undefined;
     onMounted(() => {
-      if (refDiv2.value === undefined) {
-        return;
-      }
+      if (refDiv2.value === undefined) return;
       // 基于准备好的dom，初始化echarts实例
+      console.log('onMounted');
       chart = echarts.init(refDiv2.value);
       chart.setOption(defaultOption);
     });
     watch(
       () => props.data,
       () => {
+        console.log(props.data);
         chart?.setOption({
           series: [
             {
@@ -54,6 +56,6 @@ export const PieChart = defineComponent({
         });
       }
     );
-    return () => <div ref={refDiv2} class={s.wrapper}></div>;
+    return () => <div ref={refDiv2} class={s.chartContainer}></div>;
   },
 });

@@ -27,7 +27,21 @@ export const Charts = defineComponent({
   },
   setup: (props, context) => {
     const kind = ref('expenses');
+    // --------------data1--------------
     const data1 = ref<Data1>([]);
+    onMounted(async () => {
+      const response = await http.get<{ groups: Data1; summary: number }>(
+        '/items/summary',
+        {
+          happen_after: props.startDate,
+          happen_before: props.endDate,
+          kind: kind.value,
+          group_by: 'happen_at',
+          _mock: 'itemSummary',
+        }
+      );
+      data1.value = response.data.groups;
+    });
     const betterData1 = computed<[string, number][]>(() => {
       if (!props.startDate || !props.endDate) {
         return [];
@@ -48,31 +62,8 @@ export const Charts = defineComponent({
         return [new Date(time).toISOString(), amount];
       });
     });
-
-    onMounted(async () => {
-      const response = await http.get<{ groups: Data1; summary: number }>(
-        '/items/summary',
-        {
-          happen_after: props.startDate,
-          happen_before: props.endDate,
-          kind: kind.value,
-          group_by: 'happen_at',
-          _mock: 'itemSummary',
-        }
-      );
-      data1.value = response.data.groups;
-    });
-
-    // data2
-
+    // --------------data2--------------
     const data2 = ref<Data2>([]);
-    const betterData2 = computed<{ name: string; value: number }[]>(() =>
-      data2.value.map(item => ({
-        name: item.tag.name,
-        value: item.amount,
-      }))
-    );
-
     onMounted(async () => {
       const response = await http.get<{ groups: Data2; summary: number }>(
         '/items/summary',
@@ -85,6 +76,13 @@ export const Charts = defineComponent({
         }
       );
       data2.value = response.data.groups;
+    });
+    const betterData2 = computed<{ name: string; value: number }[]>(() => {
+      const formattedData =  data2.value.map(item => ({
+        name: item.tag.name,
+        value: item.amount,
+      }));
+      return formattedData
     });
 
     return () => (
