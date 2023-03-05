@@ -1,5 +1,5 @@
 import s from './Tabs.module.scss';
-import { defineComponent, PropType } from 'vue';
+import { computed, defineComponent, PropType } from 'vue';
 
 export const Tabs = defineComponent({
   props: {
@@ -10,7 +10,7 @@ export const Tabs = defineComponent({
       type: String as PropType<string>,
       required: false,
     },
-    renderOnSelect: {
+    rerenderOnSelect: {
       type: Boolean as PropType<boolean>,
       default: false,
     },
@@ -19,9 +19,10 @@ export const Tabs = defineComponent({
   setup: (props, context) => {
     return () => {
       const tabs = context.slots.default?.();
-      if (!tabs) return () => null;
-      for (let i = 0; i < tabs.length; i++) {
-        if (tabs[i].type !== Tab) {
+      const normalizedTabs = tabs?.filter(tab => tab.type === Tab);
+      if (!normalizedTabs) return () => null;
+      for (let i = 0; i < normalizedTabs.length; i++) {
+        if (normalizedTabs[i].type !== Tab) {
           throw new Error('<Tabs> only accepts <Tab> as children');
         }
       }
@@ -29,7 +30,7 @@ export const Tabs = defineComponent({
       return (
         <div class={[s.tabs, CP + '_tabs']}>
           <ol class={[s.tabs_nav, CP + '_tabs_nav']}>
-            {tabs.map(item => (
+            {normalizedTabs.map(item => (
               <li
                 class={[
                   item.props?.name === props.selected
@@ -45,12 +46,14 @@ export const Tabs = defineComponent({
               </li>
             ))}
           </ol>
-          {props.renderOnSelect ? (
+          {props.rerenderOnSelect ? (
             <div key={props.selected}>
-              {tabs.find(item => item.props?.name === props.selected)}
+              {normalizedTabs.find(
+                item => item.props?.name === props.selected
+              )}
             </div>
           ) : (
-            tabs.map(item => (
+            normalizedTabs.map(item => (
               <div v-show={item.props?.name === props.selected}>{item}</div>
             ))
           )}

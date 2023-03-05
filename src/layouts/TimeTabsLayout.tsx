@@ -26,6 +26,14 @@ export const TimeTabsLayout = defineComponent({
       type: Object as PropType<typeof demo>,
       required: true,
     },
+    rerenderOnSwitchTab: {
+      type: Boolean,
+      default: false,
+    },
+    hideThisYear: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup: props => {
     const refSelected = ref('本月');
@@ -67,29 +75,31 @@ export const TimeTabsLayout = defineComponent({
             <>
               <Tabs
                 v-model:selected={refSelected.value}
-                classPrefix="customTabs"
+                classPrefix='customTabs'
                 onUpdate:selected={onSelected}
-                renderOnSelect={true}
+                rerenderOnSelect={props.rerenderOnSwitchTab}
               >
-                <Tab name="本月">
+                <Tab name='本月'>
                   <props.component
                     startDate={timeList[0].start}
                     endDate={timeList[0].end}
                   />
                 </Tab>
-                <Tab name="上月">
+                <Tab name='上月'>
                   <props.component
                     startDate={timeList[1].start}
                     endDate={timeList[1].end}
                   />
                 </Tab>
-                <Tab name="今年">
-                  <props.component
-                    startDate={timeList[2].start}
-                    endDate={timeList[2].end}
-                  />
-                </Tab>
-                <Tab name="自定义时间">
+                {props.hideThisYear ? null : (
+                  <Tab name='今年'>
+                    <props.component
+                      startDate={timeList[2].start}
+                      endDate={timeList[2].end}
+                    />
+                  </Tab>
+                )}
+                <Tab name='自定义时间'>
                   <props.component
                     startDate={customTime.start}
                     endDate={customTime.end}
@@ -102,26 +112,26 @@ export const TimeTabsLayout = defineComponent({
                   <main>
                     <Form onSubmit={onSubmitCustomTime}>
                       <FormItem
-                        label="开始时间"
+                        label='开始时间'
                         v-model={tempTime.start}
-                        type="date"
+                        type='date'
                       />
                       <FormItem
-                        label="结束时间"
+                        label='结束时间'
                         v-model={tempTime.end}
-                        type="date"
+                        type='date'
                       />
                       <FormItem>
                         <div class={s.actions}>
                           <button
-                            type="button"
+                            type='button'
                             onClick={() => {
                               refOverlayVisible.value = false;
                             }}
                           >
                             取消
                           </button>
-                          <button type="submit">确认</button>
+                          <button type='submit'>确认</button>
                         </div>
                       </FormItem>
                     </Form>
