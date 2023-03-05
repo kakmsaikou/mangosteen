@@ -1,21 +1,23 @@
 import { defineComponent } from 'vue';
 import { MainLayout } from '../../layouts/MainLayout';
 import { Button } from '../../shared/Button';
-import { TagFrom } from './TagForm';
+import { TagForm } from './TagForm';
 import s from './TagEdit.module.scss';
 import { BackIcon } from '../../shared/BackIcon';
 import { useRoute, useRouter } from 'vue-router';
 import { http } from '../../shared/Http';
 import { Dialog } from 'vant';
-import { myHandleError } from '../../shared/myHandleError';
 
 export const TagEdit = defineComponent({
-  setup: () => {
+  setup: (props, context) => {
     const route = useRoute();
-    const router = useRouter();
     const numberId = parseInt(route.params.id!.toString());
     if (Number.isNaN(numberId)) {
       return () => <div>id 不存在</div>;
+    }
+    const router = useRouter();
+    const onError = () => {
+      Dialog.alert({ title: '提示', message: '删除失败' })
     }
     const onDelete = async (options?: { withItems?: boolean }) => {
       await Dialog.confirm({
@@ -30,17 +32,17 @@ export const TagEdit = defineComponent({
           },
           { _autoLoading: true }
         )
-        .catch(myHandleError);
-      router.back();
+        .catch(onError);
+      router.back()
     };
     return () => (
       <MainLayout class={s.wrapper}>
         {{
-          title: () => '标签详情',
+          title: () => '编辑标签',
           icon: () => <BackIcon />,
           default: () => (
             <>
-              <TagFrom id={numberId} />
+              <TagForm id={numberId} />
               <div class={s.actions}>
                 <Button
                   class={s.deleteTag}

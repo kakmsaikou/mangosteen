@@ -1,6 +1,6 @@
 import { Button } from '../../shared/Button';
 import { defineComponent, onMounted, reactive } from 'vue';
-import { hasError, Rules } from '../../shared/validate';
+import { hasError, Rules, validate } from '../../shared/validate';
 import s from './Tag.module.scss';
 import { Form, FormItem } from '../../shared/Form';
 import { useRoute, useRouter } from 'vue-router';
@@ -14,9 +14,6 @@ export const TagForm = defineComponent({
   setup: props => {
     const route = useRoute();
     const router = useRouter();
-    if (!route.query.kind) {
-      return () => <div>参数错误</div>;
-    }
     const formData = reactive<Partial<Tag>>({
       id: undefined,
       name: '',
@@ -25,6 +22,7 @@ export const TagForm = defineComponent({
     });
     const errors = reactive<FormErrors<typeof formData>>({});
     const onSubmit = async (e: Event) => {
+      e.preventDefault();
       const rules: Rules<typeof formData> = [
         { key: 'name', type: 'required', message: '必填' },
         {
@@ -39,7 +37,7 @@ export const TagForm = defineComponent({
         name: [],
         sign: [],
       });
-      // Object.assign(errors, validate(formData, rules));
+      Object.assign(errors, validate(formData, rules));
       if (!hasError(errors)) {
         const promise = (await formData.id)
           ? http.patch(`/tags/${formData.id}`, formData, {
@@ -55,7 +53,7 @@ export const TagForm = defineComponent({
             Object.assign(error, data.errors);
           });
         });
-        router.back();
+        router.back()
       }
     };
     onMounted(async () => {
