@@ -38,7 +38,7 @@ export const ItemCreate = defineComponent({
         errors,
         validate(formData, [
           { key: 'kind', type: 'required', message: '收入/支出类别不能为空' },
-          { key: 'tag_ids', type: 'required', message: '标签ID不能为空' },
+          { key: 'tag_ids', type: 'required', message: '标签不能为空' },
           { key: 'amount', type: 'required', message: '金额不能为空' },
           {
             key: 'amount',
