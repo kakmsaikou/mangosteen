@@ -18,6 +18,7 @@ export default defineConfig({
     }),
   ],
   server:{
+    port: 3000,
     proxy : {
       '/api/v1': {
         target: ' http://121.196.236.94:8080'
