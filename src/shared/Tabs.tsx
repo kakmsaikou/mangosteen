@@ -33,13 +33,13 @@ export const Tabs = defineComponent({
             {normalizedTabs.map(item => (
               <li
                 class={[
-                  item.props?.name === props.selected
+                  item.props?.value === props.selected
                     ? [s.selected, CP + '_selected']
                     : '',
                   CP + '_tabs_nav_item',
                 ]}
                 onClick={() =>
-                  context.emit('update:selected', item.props?.name)
+                  context.emit('update:selected', item.props?.value)
                 }
               >
                 {item.props?.name}
@@ -49,12 +49,12 @@ export const Tabs = defineComponent({
           {props.rerenderOnSelect ? (
             <div key={props.selected}>
               {normalizedTabs.find(
-                item => item.props?.name === props.selected
+                item => item.props?.value === props.selected
               )}
             </div>
           ) : (
             normalizedTabs.map(item => (
-              <div v-show={item.props?.name === props.selected}>{item}</div>
+              <div v-show={item.props?.value === props.selected}>{item}</div>
             ))
           )}
         </div>
@@ -67,6 +67,11 @@ export const Tab = defineComponent({
   props: {
     name: {
       type: String as PropType<string>,
+      required: true,
+    },
+    value: {
+      type: String as PropType<string>,
+      required: true,
     },
   },
   setup: (props, context) => {

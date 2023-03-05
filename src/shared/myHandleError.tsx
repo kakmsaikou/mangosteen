@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios';
 import { Dialog } from 'vant';
 
-const popupDialog = (errorData: ResourceError) => {
+export const popupDialog = (errorData: ResourceError) => {
   Dialog.alert({
     title: '出错',
     message: Object.values(errorData.errors).join('\n'),

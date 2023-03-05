@@ -21,9 +21,9 @@ export const TagFrom = defineComponent({
       id: undefined,
       name: '',
       sign: '😀',
-      kind: route.query.kind,
+      kind: route.query.kind as 'expenses' | 'income',
     });
-    const errors = reactive<{ [k in keyof typeof formData]?: string[] }>({});
+    const errors = reactive<FormErrors<typeof formData>>({});
     const onSubmit = async (e: Event) => {
       const rules: Rules<typeof formData> = [
         { key: 'name', type: 'required', message: '必填' },
