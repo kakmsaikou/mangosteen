@@ -1,32 +1,43 @@
+import { useMeStore } from './stores/useMeStore';
 import { routes } from './config/routes';
 import { createApp } from 'vue';
 import { App } from './App';
 import { createRouter } from 'vue-router';
 import { history } from './shared/history';
 import '@svgstore';
-import { createPinia } from 'pinia';
-import { useMeStore } from './stores/useMeStore';
+import { createPinia, storeToRefs } from 'pinia';
+import { Dialog } from 'vant';
 
 const router = createRouter({ history, routes });
-
-const app = createApp(App);
 const pinia = createPinia();
-app.use(pinia).use(router);
+const app = createApp(App);
+app.use(router);
+app.use(pinia);
 app.mount('#app');
 
 const meStore = useMeStore();
+const { mePromise } = storeToRefs(meStore);
 meStore.fetchMe();
-router.beforeEach(to => {
-  if (
-    ['/', 'items'].includes(to.path) ||
-    to.path.startsWith('/welcome') ||
-    to.path.startsWith('/sign_in')
-  ) {
-    return true;
-  } else {
-    return meStore.mePromise!.then(
-      () => true,
-      () => '/sign_in?return_to' + to.path
-    );
+
+const whiteList: Record<string, 'exact' | 'startsWith'> = {
+  '/': 'exact',
+  '/items': 'exact',
+  '/welcome': 'startsWith',
+  '/sign_in': 'startsWith',
+};
+
+router.beforeEach((to, from) => {
+  for (const key in whiteList) {
+    const value = whiteList[key];
+    if (value === 'exact' && to.path === key) {
+      return true;
+    }
+    if (value === 'startsWith' && to.path.startsWith(key)) {
+      return true;
+    }
   }
+  return mePromise!.value!.then(
+    () => true,
+    () => '/sign_in?return_to=' + from.path
+  );
 });

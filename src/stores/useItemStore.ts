@@ -10,7 +10,6 @@ type Actions = {
   _fetch: (startDate?: string, endDate?: string, firstPage?: boolean) => void;
   fetchItems: (startDate?: string, endDate?: string) => void;
   fetchNextPage: (startDate?: string, endDate?: string) => void;
-  resetItem: () => void;
 };
 
 export const useItemStore = (id: string | string[]) => {
@@ -45,11 +44,6 @@ export const useItemStore = (id: string | string[]) => {
       },
       async fetchNextPage(startDate, endDate) {
         this._fetch(startDate, endDate);
-      },
-      resetItem() {
-        this.items = [];
-        this.hasMore = false;
-        this.page = 0;
       },
     },
   })();
