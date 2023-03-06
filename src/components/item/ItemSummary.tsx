@@ -1,12 +1,12 @@
 import {
   defineComponent,
-  onMounted,
   PropType,
   reactive,
   ref,
   watch,
 } from 'vue';
 import { RouterLink } from 'vue-router';
+import { useAfterMe } from '../../hooks/useAfterMe';
 import { Button } from '../../shared/Button';
 import { Center } from '../../shared/Center';
 import { Datetime } from '../../shared/DateTime';
@@ -57,7 +57,7 @@ export const ItemSummary = defineComponent({
         fetchItems();
       }
     );
-    onMounted(fetchItems);
+    useAfterMe(fetchItems)
     const itemsBalance = reactive({
       expenses: 0,
       income: 0,
@@ -73,7 +73,7 @@ export const ItemSummary = defineComponent({
       });
       Object.assign(itemsBalance, response.data);
     };
-    onMounted(fetchItemsBalance);
+    useAfterMe(fetchItemsBalance)
     watch(
       () => [props.startDate, props.endDate],
       () => {
