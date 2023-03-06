@@ -1,8 +1,8 @@
 import { Dialog } from 'vant';
 import { defineComponent, onMounted, PropType, ref } from 'vue';
 import { RouterLink, useRoute } from 'vue-router';
+import { useMeStore } from '../stores/useMeStore';
 import { Icon } from './Icon';
-import { fetchLoggedStatus } from './me';
 import s from './Overlay.module.scss';
 
 export const Overlay = defineComponent({
@@ -12,13 +12,14 @@ export const Overlay = defineComponent({
     },
   },
   setup: props => {
+    const meStore = useMeStore();
     const closeMenu = () => {
       props.onClose?.();
     };
     const currentPath = useRoute().fullPath;
     const LoggedStatus = ref<User>();
     onMounted(async () => {
-      const response = await fetchLoggedStatus();
+      const response = await meStore.mePromise;
       LoggedStatus.value = response?.data.resource;
     });
     const handleLogout = () => {
@@ -49,20 +50,20 @@ export const Overlay = defineComponent({
           <nav>
             <ul class={s.action_list}>
               <li>
-                <RouterLink to="/statistics" class={s.action}>
-                  <Icon name="charts" class={s.icon} />
+                <RouterLink to='/statistics' class={s.action}>
+                  <Icon name='charts' class={s.icon} />
                   <span>统计图表</span>
                 </RouterLink>
               </li>
               <li>
-                <RouterLink to="/export" class={s.action}>
-                  <Icon name="export" class={s.icon} />
+                <RouterLink to='/export' class={s.action}>
+                  <Icon name='export' class={s.icon} />
                   <span>导出数据</span>
                 </RouterLink>
               </li>
               <li>
-                <RouterLink to="/notify" class={s.action}>
-                  <Icon name="notify" class={s.icon} />
+                <RouterLink to='/notify' class={s.action}>
+                  <Icon name='notify' class={s.icon} />
                   <span>记账提醒</span>
                 </RouterLink>
               </li>
