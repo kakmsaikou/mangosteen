@@ -17,8 +17,8 @@ export const TagEdit = defineComponent({
     }
     const router = useRouter();
     const onError = () => {
-      Dialog.alert({ title: '提示', message: '删除失败' })
-    }
+      Dialog.alert({ title: '提示', message: '删除失败' });
+    };
     const onDelete = async (options?: { withItems?: boolean }) => {
       await Dialog.confirm({
         title: '确认',
@@ -33,7 +33,7 @@ export const TagEdit = defineComponent({
           { _autoLoading: true }
         )
         .catch(onError);
-      router.back()
+      router.back();
     };
     return () => (
       <MainLayout class={s.wrapper}>
@@ -45,22 +45,13 @@ export const TagEdit = defineComponent({
               <TagForm id={numberId} />
               <div class={s.actions}>
                 <Button
-                  class={s.deleteTag}
-                  onClick={() => {
-                    onDelete();
-                  }}
-                  level={'danger'}
-                >
-                  删除标签
-                </Button>
-                <Button
                   class={s.clearAllRecord}
                   onClick={() => {
                     onDelete({ withItems: true });
                   }}
                   level={'danger'}
                 >
-                  删除标签和记账
+                  删除标签(对应的记账也会被删除)
                 </Button>
               </div>
             </>

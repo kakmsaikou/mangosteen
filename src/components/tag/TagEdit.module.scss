@@ -6,9 +6,8 @@
     display: flex;
     justify-content: space-between;
 
-    .deleteTag,
     .clearAllRecord {
-      width: calc(50% - 8px);
+      width: 100%;
     }
   }
 }
