@@ -56,3 +56,5 @@ type User = {
 };
 
 type FormErrors<T> = { [K in keyof typeof T]: string[] };
+
+declare var DEBUG: boolean;
