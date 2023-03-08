@@ -1,6 +1,5 @@
 import { RouteRecordRaw } from 'vue-router';
 import { ItemList } from '../components/item/ItemList';
-import { ItemsPage } from '../views/ItemsPage';
 import { ItemCreate } from '../components/item/ItemCreate';
 import { First } from '../components/welcome/First';
 import { Second } from '../components/welcome/Second';
@@ -11,11 +10,8 @@ import { FirstActions } from '../components/welcome/FirstActions';
 import { SecondActions } from '../components/welcome/SecondActions';
 import { ThirdAction } from '../components/welcome/ThirdActions';
 import { FourthActions } from '../components/welcome/FourthActions';
-import { TagPage } from '../views/TagPage';
 import { TagEdit } from '../components/tag/TagEdit';
 import { TagCreate } from '../components/tag/TagCreate';
-import { SignInPage } from '../views/SignInPage';
-import { StatisticsPage } from '../views/StatisticsPage';
 import { http } from '../shared/Http';
 import { ComingSoon } from '../shared/ComingSoon';
 
@@ -24,6 +20,8 @@ export const routes: RouteRecordRaw[] = [
   {
     path: '/welcome',
     component: WelcomePage,
+    // 这里用懒加载会报错，原因不明
+    // component: () => import('../views/WelcomePage'),
     beforeEnter: (to, from, next) => {
       localStorage.getItem('skipFeatures') === 'yes'
         ? next('/items')
@@ -55,7 +53,7 @@ export const routes: RouteRecordRaw[] = [
   },
   {
     path: '/items',
-    component: ItemsPage,
+    component: () => import('../views/ItemsPage'),
     beforeEnter: async (to, from, next) => {
       await http.get('/me').catch(() => {
         next('/sign_in?return_to=' + to.path);
@@ -69,7 +67,7 @@ export const routes: RouteRecordRaw[] = [
   },
   {
     path: '/tags',
-    component: TagPage,
+    component: () => import('../views/TagPage'),
     children: [
       { path: 'create', component: TagCreate },
       { path: ':id/edit', component: TagEdit },
@@ -77,11 +75,11 @@ export const routes: RouteRecordRaw[] = [
   },
   {
     path: '/sign_in',
-    component: SignInPage,
+    component: () => import('../views/SignInPage'),
   },
   {
     path: '/statistics',
-    component: StatisticsPage,
+    component: () => import('../views/StatisticsPage'),
   },
   {
     path: '/export',
